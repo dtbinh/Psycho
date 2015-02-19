@@ -32,6 +32,8 @@ int main()
 
         noir ->displayMarbles();
 
+        cout << "end" << endl;
+
         return 0;
 
 }
