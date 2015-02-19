@@ -69,7 +69,7 @@ int split(int * destination, string chaine, char separateur)
 
     destination[i] = atoi(chaine.c_str());
 
-    return i;
+    return i+1;
 }
 
 bool Board::loadPaths(string file){
@@ -91,11 +91,14 @@ bool Board::loadPaths(string file){
         cout << nbPaths << " paths found" << endl;
 
         while(!fichier.eof()){
+            nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
             getline(fichier, line);
             string delimiter = " : ";
             string pathId = line.substr(0, line.find(delimiter));
             string rest = line.substr(line.find(delimiter)+3, line.length()); // +3 for the 2 spaces and the :
             int nbNodes;
+
+            nbNodes = split(nodeList, rest, ' ');
 
             this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes);
         }
