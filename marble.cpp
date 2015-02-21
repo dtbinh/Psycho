@@ -98,7 +98,7 @@ void Marble::computeAccessibleNodes(){
             cout << currentPath->getNodeId(j) << " ?= " << myNode << endl;
             if(currentPath->getNodeId(j) == myNode){
                 // Browse the rest of the Path
-                for(int k = j; k < currentPath->getNbNodes(); k++){
+                for(int k = j+1; k < currentPath->getNbNodes(); k++){
                     cout << "hello" << endl;
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                     // There is no Marble in that node, so that node is added to the accessibleNodes
@@ -119,7 +119,7 @@ void Marble::computeAccessibleNodes(){
                 }
 
                 //Browse the begining of the Path
-                for(int k = 0; k < j; k++){
+                for(int k = j-1; k >=0 ; k--){
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                     if(currentMarble == NULL){
                         accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
