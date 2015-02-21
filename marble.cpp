@@ -94,12 +94,10 @@ void Marble::computeAccessibleNodes(){
         savedByPsychologist = false;
         startAccessibleNodes = this->nbComputedNodes;
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
-            // Ther currentPath contains this Marble
-            cout << currentPath->getNodeId(j) << " ?= " << myNode << endl;
+            // The currentPath contains this Marble
             if(currentPath->getNodeId(j) == myNode){
                 // Browse the rest of the Path
                 for(int k = j+1; k < currentPath->getNbNodes(); k++){
-                    cout << "hello" << endl;
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                     // There is no Marble in that node, so that node is added to the accessibleNodes
                     if(currentMarble == NULL){
@@ -155,6 +153,29 @@ void Marble::computeAccessibleNodes(){
             }
         }
     }
+}
+
+bool Marble::isCatch(){
+    Board& boardInstance = Board::Instance();
+    bool surrounded = false;
+    bool watched = false;
+
+    Path* currentPath;                                          // Used to gain computation time and space in the code
+    Marble* currentMarble;                                      // Same
+    Path** paths = boardInstance.getPaths();                    // Same
+    int nbPath = boardInstance.getNbPaths();
+
+    for(int i = 0; i < nbPath; i++){
+        currentPath = paths[i];
+        stuckByPsychologist = false;
+        savedByPsychologist = false;
+        startAccessibleNodes = this->nbComputedNodes;
+        for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
+            // Ther currentPath contains this Marble
+
+        }
+    }
+
 }
 
 void Marble::displayAccessibleNodes(){
