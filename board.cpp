@@ -1,3 +1,4 @@
+#include "util.h"
 #include "node.h"
 #include "marble.h"
 #include "path.h"
@@ -54,24 +55,6 @@ Board& Board::Instance(){
     return m_instance;
 }
 
-int split(int * destination, string chaine, char separateur)
-{
-    string::size_type stTemp = chaine.find(separateur);
-    int i = 0;
-
-    while(stTemp != string::npos)
-    {
-        destination[i] = atoi(chaine.substr(0, stTemp).c_str());
-        chaine = chaine.substr(stTemp + 1);
-        stTemp = chaine.find(separateur);
-        i++;
-    }
-
-    destination[i] = atoi(chaine.c_str());
-
-    return i+1;
-}
-
 bool Board::loadPaths(string file){
     ifstream fichier;
     fichier.open(file.c_str(), ios::in); // opening file in read only
@@ -98,7 +81,7 @@ bool Board::loadPaths(string file){
             string rest = line.substr(line.find(delimiter)+3, line.length()); // +3 for the 2 spaces and the :
             int nbNodes;
 
-            nbNodes = split(nodeList, rest, ' ');
+            nbNodes = Util::split(nodeList, rest, ' ');
 
             this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes);
         }
@@ -108,7 +91,7 @@ bool Board::loadPaths(string file){
         return true;
     }
     else{
-        cerr << "Error in file open" << endl;
+        cerr << "Error in file open " << file << endl;
         return false;
     }
 }

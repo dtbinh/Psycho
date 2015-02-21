@@ -9,10 +9,11 @@ using namespace std;
 int main()
 {
     Board& theboard = Board::Instance();
-        Player* blanc = new Player(PLAYERONE);
-        Player* noir = new Player(PLAYERTWO);
 
         cout << "Board created ! With " << theboard.size() << " nodes." << endl;
+
+        Player* blanc = new Player(PLAYERONE);
+        Player* noir = new Player(PLAYERTWO);
 
         cout << "Board" << endl;
 

@@ -20,11 +20,13 @@ SOURCES += main.cpp \
     node.cpp \
     path.cpp \
     player.cpp \
-    board.cpp
+    board.cpp \
+    util.cpp
 
 HEADERS += \
     marble.h \
     node.h \
     path.h \
     player.h \
-    board.h
+    board.h \
+    util.h
