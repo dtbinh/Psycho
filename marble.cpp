@@ -9,7 +9,7 @@ Marble::Marble(){
 
 Marble::Marble(int nodeId, int type)
 {
-    this->currentNode = nodeId;
+    this->myNode = nodeId;
     this->type = type;
     this->hadPsychologist = false;
     this->stuck = false;
@@ -22,7 +22,7 @@ Marble::~Marble()
 }
 
 int Marble::getCurrentNode(){
-    return currentNode;
+    return myNode;
 }
 
 int* Marble::getAccessibleNodes(){
@@ -30,7 +30,7 @@ int* Marble::getAccessibleNodes(){
 }
 
 void Marble::setCurrentNode(int nodeId){
-    currentNode = nodeId;
+    myNode = nodeId;
 }
 
 void Marble::setOwner(Player* owner){
@@ -71,7 +71,7 @@ void Marble::computeAccessibleNodes(){
     // Declaration block
     Board& boardInstance = Board::Instance();
     this->accessibleNodes = new int[boardInstance.size()];
-    nbNodesComputed = 0;
+    nbComputedNodes = 0;
     bool alreadyStuckByPsychologist = false;                    // A Psychologist is locking a path
     bool stuckByPsychologist = false;                           // A Psychologist is locking the current path
     bool savedByPsychologist = false;                           // A Psychologist is unlocking the current path if needed be
@@ -92,17 +92,19 @@ void Marble::computeAccessibleNodes(){
         currentPath = paths[i];
         stuckByPsychologist = false;
         savedByPsychologist = false;
-        startAccessibleNodes = this->nbNodesComputed;
+        startAccessibleNodes = this->nbComputedNodes;
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
             // Ther currentPath contains this Marble
-            if(currentPath->getNodeId(j) == currentNode){
+            cout << currentPath->getNodeId(j) << " ?= " << myNode << endl;
+            if(currentPath->getNodeId(j) == myNode){
                 // Browse the rest of the Path
-                for(int k = j; k < currentPath->getNbNodes(); k++){
+                for(int k = j+1; k < currentPath->getNbNodes(); k++){
+                    cout << "hello" << endl;
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                     // There is no Marble in that node, so that node is added to the accessibleNodes
                     if(currentMarble == NULL){
-                        accessibleNodes[nbNodesComputed] = currentPath->getNodeId(k);
-                        nbNodesComputed++;
+                        accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
+                        nbComputedNodes++;
                     // There is a Marble in that node
                     }else if(currentMarble->getType() == PSYCHOLOGIST){
                         if(currentMarble->getOwner() != this->owner){
@@ -117,11 +119,11 @@ void Marble::computeAccessibleNodes(){
                 }
 
                 //Browse the begining of the Path
-                for(int k = 0; k < j; k++){
+                for(int k = j-1; k >=0 ; k--){
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                     if(currentMarble == NULL){
-                        accessibleNodes[nbNodesComputed] = currentPath->getNodeId(k);
-                        nbNodesComputed++;
+                        accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
+                        nbComputedNodes++;
                     }else if(currentMarble->getType() == PSYCHOLOGIST){
                         if(currentMarble->getOwner() != this->owner){
                             stuckByPsychologist = true;
@@ -138,11 +140,11 @@ void Marble::computeAccessibleNodes(){
                     // An other Path was locked too, so the marble is stuck
                     if(alreadyStuckByPsychologist){
                         this->stuck = true;
-                        nbNodesComputed = 0;
+                        nbComputedNodes = 0;
                     }else{
                         // Only the nodes of this Path are accessible because of a Psychologist
                         accessibleNodes = &(accessibleNodes[startAccessibleNodes]);
-                        nbNodesComputed = nbNodesComputed - startAccessibleNodes;
+                        nbComputedNodes = nbComputedNodes - startAccessibleNodes;
                         alreadyStuckByPsychologist = true;
                     }
                 }
@@ -155,6 +157,15 @@ void Marble::computeAccessibleNodes(){
     }
 }
 
+void Marble::displayAccessibleNodes(){
+    cout << nbComputedNodes << " Nodes" << endl;
+    for(int i = 0; i < nbComputedNodes; i++){
+        cout << "   |" << endl;
+        cout << "   _" << accessibleNodes[i] << endl;
+    }
+}
+
+
 /**
  * Not used anymore, Kept for possible debug
  * @brief Marble::computeAccessibleNodesForPath
@@ -163,13 +174,13 @@ void Marble::computeAccessibleNodes(){
  */
 void Marble::computeAccessibleNodesForPath(Path *p, int marbleId){
     Board& boardInstance = Board::Instance();
-    int startAccessibleNodes = nbNodesComputed;
+    int startAccessibleNodes = nbComputedNodes;
     bool havePsychologist = false;
 
     for(int i = marbleId + 1; i < p->getNbNodes(); i++){
         if(boardInstance.getNode(p->getNodeId(i))->getMarble() == NULL){
-            accessibleNodes[nbNodesComputed] = p->getNodeId(i);
-            nbNodesComputed++;
+            accessibleNodes[nbComputedNodes] = p->getNodeId(i);
+            nbComputedNodes++;
         }else if(boardInstance.getNode(p->getNodeId(i))->getMarble()->getType() == PSYCHOLOGIST){
             havePsychologist = true;
             continue;
@@ -180,8 +191,8 @@ void Marble::computeAccessibleNodesForPath(Path *p, int marbleId){
 
     for(int i = marbleId - 1; i >= 0; i--){
         if(boardInstance.getNode(p->getNodeId(i))->getMarble() == NULL){
-            accessibleNodes[nbNodesComputed] = p->getNodeId(i);
-            nbNodesComputed++;
+            accessibleNodes[nbComputedNodes] = p->getNodeId(i);
+            nbComputedNodes++;
         }else if(boardInstance.getNode(p->getNodeId(i))->getMarble()->getType() == PSYCHOLOGIST){
             havePsychologist = true;
             continue;
@@ -194,7 +205,7 @@ void Marble::computeAccessibleNodesForPath(Path *p, int marbleId){
         stuck = true;
     }else if(havePsychologist){
         accessibleNodes = accessibleNodes + sizeof(int) * startAccessibleNodes;
-        nbNodesComputed = nbNodesComputed - startAccessibleNodes;
+        nbComputedNodes = nbComputedNodes - startAccessibleNodes;
         hadPsychologist = true;
     }
 

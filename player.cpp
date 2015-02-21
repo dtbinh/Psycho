@@ -93,6 +93,7 @@ void Player::displayMarbles(){
    for(int i = 0; i < NBMARBLES; i++){
        name = Marble::getNameFromType(disposition[i]->getType());
        cout << "(" << name << ") " << disposition[i]->getCurrentNode() << endl;
+       disposition[i]->displayAccessibleNodes();
    }
 }
 

@@ -23,11 +23,14 @@ public:
     void computeAccessibleNodes();
     void setCurrentNode(int nodeId);
     void setOwner(Player*);
+    void displayAccessibleNodes();
 
     int* getAccessibleNodes();
     int getCurrentNode();
     Player* getOwner();
     static string getNameFromType(int t);
+
+    bool isCatch();
 
     int getType();
 
@@ -35,10 +38,10 @@ private:
     void computeAccessibleNodesForPath(Path*, int marbleId);
     int type;
     int* accessibleNodes; // nodes ids
-    int nbNodesComputed;
+    int nbComputedNodes;
     bool hadPsychologist;
     bool stuck;
-    int currentNode; // current node id
+    int myNode; // current node id
     Player* owner;
 };
 
