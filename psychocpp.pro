@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-02-08T12:41:42
+# Project created by QtCreator 2015-01-22T15:24:58
 #
 #-------------------------------------------------
 
@@ -16,15 +16,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    board.cpp \
     marble.cpp \
     node.cpp \
     path.cpp \
-    player.cpp
+    player.cpp \
+    board.cpp \
+    util.cpp
 
 HEADERS += \
-    board.h \
     marble.h \
     node.h \
     path.h \
-    player.h
+    player.h \
+    board.h \
+    util.h
