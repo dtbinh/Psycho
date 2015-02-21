@@ -33,6 +33,7 @@ public:
     bool isCatch();
 
     int getType();
+    int getNbComputedNodes();
 
 private:
     void computeAccessibleNodesForPath(Path*, int marbleId);

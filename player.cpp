@@ -1,5 +1,6 @@
 #include "marble.h"
 #include "player.h"
+#include "node.h"
 #include "board.h"
 #include "util.h"
 #include <cstdlib>
@@ -45,6 +46,7 @@ Player::Player(int player)
                     dispId++;
                 }
             }
+            nbMarbles = playerOneMarbles;
         }
         else if(player == PLAYERTWO){
             // seek number of marbles for player 2
@@ -67,6 +69,7 @@ Player::Player(int player)
                 boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
                 dispId++;
             }
+            nbMarbles = playerTwoMarbles;
         }
         else{
             // ?
@@ -86,6 +89,46 @@ Player::Player(int player)
 Player::~Player()
 {
 
+}
+
+// Check source node and destination node and do the move if possible. Return false if invalid move
+bool Player::move(Node * src, Node * dst){
+    // 1) if src node exists
+    if(src->getMarble()){
+        // if wrong owner
+        if(src->getMarble()->getOwner() != this){
+            cout << "invalid owner or source node invalid" << endl;
+            return false;
+        }
+        // 2 : check the dst node
+        bool dstNodeIsCorrect = false;
+        int * correctDestinations = src->getMarble()->getAccessibleNodes();
+        cout << "checking " << src->getMarble()->getNbComputedNodes() << " nodes";
+        for(int i = 0 ; i < src->getMarble()->getNbComputedNodes(); i++){
+            // If dst found then it's correct
+            if(correctDestinations[i] == dst->getId()){
+                dstNodeIsCorrect = true;
+            }
+        }
+        // 3 if correct, do the move
+        if(dstNodeIsCorrect){
+            dst->setMarble(src->getMarble());
+            src->setMarble(NULL);
+            dst->getMarble()->setCurrentNode(dst->getId());
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+}
+
+void Player::computePossibilities(){
+    for(int i = 0 ; i < nbMarbles ; i++){
+        disposition[i]->computeAccessibleNodes();
+    }
 }
 
 void Player::displayMarbles(){

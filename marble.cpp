@@ -45,6 +45,10 @@ int Marble::getType(){
     return type;
 }
 
+int Marble::getNbComputedNodes(){
+    return nbComputedNodes;
+}
+
 string Marble::getNameFromType(int t){
     switch(t){
     case PSYCHOPATH :
