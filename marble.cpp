@@ -13,7 +13,7 @@ Marble::Marble(int nodeId, int type)
     this->type = type;
     this->hadPsychologist = false;
     this->stuck = false;
-    this->owner = owner;
+    //this->owner = owner;
 }
 
 Marble::~Marble()
