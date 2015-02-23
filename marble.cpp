@@ -167,8 +167,6 @@ bool Marble::isCatch(){
     int watchedOnIndex = 0;
     int specialNodeBeforeDoctor;
 
-    int startAccessibleNodes;
-
     bool surrounded;                                            // This Marble is surrounded by Doctors
     bool watched;                                               // This Marble is watched by an Informer
     bool doctorAfter;
