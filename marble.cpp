@@ -45,6 +45,10 @@ int Marble::getType(){
     return type;
 }
 
+int Marble::getNbComputedNodes(){
+    return nbComputedNodes;
+}
+
 string Marble::getNameFromType(int t){
     switch(t){
     case PSYCHOPATH :
@@ -157,10 +161,12 @@ void Marble::computeAccessibleNodes(){
 
 bool Marble::isCatch(){
     Board& boardInstance = Board::Instance();
-    int surroundedOnPath = new int[NB_CROSSING_PATHS];
+    int surroundedOnPath[NB_CROSSING_PATHS];
     int surroundedOnIndex = 0;
-    int watchedOnPath = new int[NB_CROSSING_PATHS];
+    int watchedOnPath[NB_CROSSING_PATHS];
     int watchedOnIndex = 0;
+
+    int startAccessibleNodes;
 
     bool surrounded;                                            // This Marble is surrounded by Doctors
     bool watched;                                               // This Marble is watched by an Informer
@@ -232,6 +238,7 @@ bool Marble::isCatch(){
     for(int i = 0; i < surroundedOnIndex; i++){
         for(int j = 0; j < watchedOnIndex; j++){
             if(surroundedOnPath[i] != watchedOnPath[j]){
+                cout << Marble::getNameFromType(this->getType()) << " captured" << endl;
                 return true;
             }
         }

@@ -1,8 +1,9 @@
 #include "path.h"
 
-Path::Path(int * t, int nbNodes){
+Path::Path(int * t, int nbNodes, bool isBorder){
     this->path = t;
     this->nbNodes = nbNodes;
+    this->isBorder = isBorder;
 }
 
 Path::Path()
@@ -21,4 +22,8 @@ Path::getNbNodes(){
 
 Path::getNodeId(int i){
     return path[i];
+}
+
+bool Path::isTheBorder(){
+    return isBorder;
 }

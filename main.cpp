@@ -10,32 +10,40 @@ int main()
 {
     Board& theboard = Board::Instance();
 
-        cout << "Board created ! With " << theboard.size() << " nodes." << endl;
+    cout << "Board created ! With " << theboard.size() << " nodes." << endl;
 
-        Player* blanc = new Player(PLAYERONE);
-        Player* noir = new Player(PLAYERTWO);
+    Player* blanc = new Player(PLAYERONE);
+    Player* noir = new Player(PLAYERTWO);
 
-        cout << "Board" << endl;
+   /* cout << "=== Joueur 1 ===" << endl;
+    blanc->displayMarbles();
+    cout << "=== Joueur 2 ===" << endl;
+    noir ->displayMarbles();*/
 
-        for(int i = 0 ; i < theboard.getNbPaths() ; i++){
-            cout << "Path " << i << endl;
-            for(int j = 0 ; j < theboard.getPath(i)->getNbNodes() ; j++){
-                cout << theboard.getPath(i)->getNodeId(j) << " ";
-            }
-            cout << endl;
-        }
+    blanc->computePossibilities();
+    noir->computePossibilities();
 
-        cout << "=== Joueur 1 ==="     << endl;
 
-        blanc->displayMarbles();
+    cout << endl << endl << "[blanc] Allons capturer le psycho d'en face (76) !" << endl;
 
-        cout << "=== Joueur 2 ===" << endl;
 
-        noir ->displayMarbles();
+    blanc->move(theboard.getNode(34), theboard.getNode(29)); // informer
+    blanc->computePossibilities();
+    noir->computePossibilities();
+    blanc->move(theboard.getNode(29), theboard.getNode(73)); // informer
+    blanc->computePossibilities();
+    noir->computePossibilities();
+    blanc->move(theboard.getNode(120), theboard.getNode(114)); // doctor
+    blanc->computePossibilities();
+    noir->computePossibilities();
+    blanc->move(theboard.getNode(114), theboard.getNode(105)); // doctor
+    blanc->computePossibilities();
+    noir->computePossibilities();
 
-        cout << "end" << endl;
+    cout << theboard.getNode(76)->getMarble()->isCatch() << endl;
 
-        return 0;
+    cout << "end" << endl;
+    return 0;
 
 }
 
