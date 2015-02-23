@@ -28,7 +28,7 @@ Board::Board()
 
     nodes = (Node**)malloc(sizeof(Node*) * BOARDSIZE);
 
-    for(int i = 0 ; i <= 162 ; i++){
+    for(int i = 0 ; i <= BOARDNODES ; i++){
         // special nodes        
         if(i == 0 || i == 155 || i == 8 || i == 93 || i == 101 || i == 147){
             this->nodes[i] = new Node(i, NULL, true, false);
@@ -39,10 +39,18 @@ Board::Board()
         }
     }
 
+    // setPaths for all the nodes
+    for(int i = 0 ; i < this->getNbPaths() ; i++){
+        for(int j = 0 ; j < this->getPath(i)->getNbNodes() ; j++){
+            this->nodes[this->getPath(i)->getNodeId(j)]->setPath(this->getPath(i));
+        }
+    }
+
     // nodes for dead marbles
-    for(int i = 163 ; i <= BOARDSIZE - 1 ; i++){
+    for(int i = BOARDNODES + 1 ; i <= BOARDSIZE - 1 ; i++){
         this->nodes[i] = new Node(i, NULL, false, true);
     }
+    this->firstFreeDeadMarble = BOARDNODES + 1;
 }
 
 Board::~Board()
@@ -97,6 +105,23 @@ bool Board::loadPaths(string file){
     }
     else{
         cerr << "Error in file open " << file << endl;
+        return false;
+    }
+}
+
+bool Board::killMarble(Marble * marbleToKill){
+    if(marbleToKill != NULL){
+        Node * marbleNode = nodes[marbleToKill->getCurrentNode()];
+        Node * deadNode = nodes[firstFreeDeadMarble]; // get an empty dead node
+        deadNode->setMarble(marbleToKill); // put the marble in it
+        marbleNode->setMarble(NULL); // set the previous node marble to null
+        deadNode->getMarble()->setCurrentNode(deadNode->getId());
+        cout << "killed " << marbleNode->getId() << " to " << deadNode->getId() << endl;
+        firstFreeDeadMarble++ ;
+        return true;
+    }
+    else{
+        cout << "No marble to kill !" << endl;
         return false;
     }
 }

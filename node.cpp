@@ -1,4 +1,5 @@
 #include "node.h"
+#include "path.h"
 
 
 Node::Node(){
@@ -16,6 +17,14 @@ Node::Node(int id, Marble* marble, bool special = false, bool deadMarble = false
 Node::~Node()
 {
 
+}
+
+Path * Node::getPath(){
+    return path;
+}
+
+void Node::setPath(Path * p){
+    path = p;
 }
 
 bool Node::isSpecial(){
