@@ -263,6 +263,15 @@ bool Marble::isCatch(){
     return false;
 }
 
+void Marble::kill(){
+    Board& boardInstance = Board::Instance();
+    boardInstance.killMarble(this);
+}
+
+bool Marble::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
+    return false;
+}
+
 void Marble::displayAccessibleNodes(){
     cout << nbComputedNodes << " Nodes" << endl;
     for(int i = 0; i < nbComputedNodes; i++){

@@ -115,6 +115,18 @@ bool Player::move(Node * src, Node * dst){
             src->setMarble(NULL);
             dst->getMarble()->setCurrentNode(dst->getId());
             cout << "moved " << src->getId() << " to " << dst->getId() << endl;
+            // WHEN MOVED
+            // A) CHECK SUICIDE
+            if(dst->getMarble()->isCatch()){
+                cout << "(" << dst->getId() << ") " << Marble::getNameFromType(dst->getMarble()->getType()) << " suicided !" << endl;
+                dst->getMarble()->kill();
+            }
+            // B) CHECK KILL
+            else{
+                if(dst->getMarble()->getType() == DOCTOR || dst->getMarble()->getType() == INFORMER){
+                    // TODO
+                }
+            }
         }
         else{
             cout << "Destination node invalid (" << dst->getId() << ")" << endl;
