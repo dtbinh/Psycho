@@ -11,6 +11,8 @@ using namespace std;
 #define DOCTOR 2
 #define PSYCHOLOGIST 3
 
+#define NB_CROSSING_PATHS 3
+
 class Path;
 
 class Marble
