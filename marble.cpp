@@ -157,10 +157,13 @@ void Marble::computeAccessibleNodes(){
 
 bool Marble::isCatch(){
     Board& boardInstance = Board::Instance();
-    bool surrounded = false;                                    // This Marble is surrounded by Doctors
-    int* surroundedOnPaths = new int[3];                        // Paths that surround this Marble
-    bool watched = false;                                       // This Marble is watched by an Informer
-    int watchedOnPaths = new int[3];                            // Paths that watch this Marble
+    int surroundedOnPath = new int[NB_CROSSING_PATHS];
+    int surroundedOnIndex = 0;
+    int watchedOnPath = new int[NB_CROSSING_PATHS];
+    int watchedOnIndex = 0;
+
+    bool surrounded;                                            // This Marble is surrounded by Doctors
+    bool watched;                                               // This Marble is watched by an Informer
     bool doctorAfter;
     bool doctorBefore;
 
@@ -173,6 +176,8 @@ bool Marble::isCatch(){
         currentPath = paths[i];
         doctorAfter = false;
         doctorBefore = false;
+        surrounded = false;
+        watched = false;
         startAccessibleNodes = this->nbComputedNodes;
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
             // The currentPath contains this Marble
@@ -184,36 +189,55 @@ bool Marble::isCatch(){
                     //The current Node contains an opponent's Marble
                     if(currentMarble != NULL && currentMarble->owner != this->owner){
 
-                        if(currentMarble->getType() == DOCTOR && doctorBefore){
+                        if(currentMarble->getType() == DOCTOR && doctorBefore && !surrounded){
                             surrounded = true;
-                            surroundedOnPath = i;
-                        }else if(currentMarble != NULL && currentMarble->getType() == DOCTOR){
+                            surroundedOnPath[surroundedOnIndex] = i;
+                            surroundedOnIndex++;
+                        }else if(currentMarble->getType() == DOCTOR){
                             doctorAfter = true;
                         }
 
-                        if(currentMarble->getType() == INFORMER){
+                        if(currentMarble->getType() == INFORMER && !watched){
                             watched = true;
-                            watchedOnPath = i;
+                            watchedOnPath[watchedOnIndex] = i;
+                            watchedOnIndex++;
                         }
                     }
 
                     //Browse the begining of the Path
                     for(int k = j-1; k >=0 ; k--){
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
-                        if(currentMarble != NULL && currentMarble->getType() == DOCTOR && doctorAfter){
-                            surrounded = true;
-                            surroundedOnPath = i;
-                        }else if(currentMarble != NULL && currentMarble->getType() == DOCTOR){
-                            doctorBefore = true;
+                        if(currentMarble != NULL && currentMarble->owner != this->owner){
+
+                            if(currentMarble->getType() == DOCTOR && doctorAfter && !surrounded){
+                                surrounded = true;
+                                surroundedOnPath[surroundedOnIndex] = i;
+                                surroundedOnIndex++;
+                            }else if(currentMarble->getType() == DOCTOR){
+                                doctorBefore = true;
+                            }
+
+                            if(currentMarble->getType() == INFORMER && !watched){
+                                watched = true;
+                                watchedOnPath[watchedOnIndex] = i;
+                                watchedOnIndex++;
+                            }
                         }
                     }
-
                 }
             }
         }
 
     }
+    for(int i = 0; i < surroundedOnIndex; i++){
+        for(int j = 0; j < watchedOnIndex; j++){
+            if(surroundedOnPath[i] != watchedOnPath[j]){
+                return true;
+            }
+        }
+    }
 
+    return false;
 }
 
 void Marble::displayAccessibleNodes(){
