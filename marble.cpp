@@ -165,6 +165,7 @@ bool Marble::isCatch(){
     int surroundedOnIndex = 0;
     int watchedOnPath[NB_CROSSING_PATHS];
     int watchedOnIndex = 0;
+    int specialNodeBeforeDoctor;
 
     int startAccessibleNodes;
 
@@ -184,6 +185,7 @@ bool Marble::isCatch(){
         doctorBefore = false;
         surrounded = false;
         watched = false;
+        specialNodeBeforeDoctor = 0;
         startAccessibleNodes = this->nbComputedNodes;
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
             // The currentPath contains this Marble
@@ -197,43 +199,59 @@ bool Marble::isCatch(){
 
                         if(currentMarble->getType() == DOCTOR && doctorBefore && !surrounded){
                             surrounded = true;
-                            surroundedOnPath[surroundedOnIndex] = i;
-                            surroundedOnIndex++;
                         }else if(currentMarble->getType() == DOCTOR){
                             doctorAfter = true;
                         }
 
                         if(currentMarble->getType() == INFORMER && !watched){
                             watched = true;
-                            watchedOnPath[watchedOnIndex] = i;
-                            watchedOnIndex++;
                         }
                     }
 
-                    //Browse the begining of the Path
-                    for(int k = j-1; k >=0 ; k--){
-                        currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
-                        if(currentMarble != NULL && currentMarble->owner != this->owner){
+                    if(currentPath->isTheBorder() && !doctorAfter && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
+                        specialNodeBeforeDoctor++;
+                    }
 
-                            if(currentMarble->getType() == DOCTOR && doctorAfter && !surrounded){
-                                surrounded = true;
-                                surroundedOnPath[surroundedOnIndex] = i;
-                                surroundedOnIndex++;
-                            }else if(currentMarble->getType() == DOCTOR){
-                                doctorBefore = true;
-                            }
+                }
 
-                            if(currentMarble->getType() == INFORMER && !watched){
-                                watched = true;
-                                watchedOnPath[watchedOnIndex] = i;
-                                watchedOnIndex++;
-                            }
+                //Browse the begining of the Path
+                for(int k = j-1; k >=0 ; k--){
+                    currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
+
+                    if(currentMarble != NULL && currentMarble->owner != this->owner){
+
+                        if(currentMarble->getType() == DOCTOR && doctorAfter && !surrounded){
+                            surrounded = true;
+                        }else if(currentMarble->getType() == DOCTOR){
+                            doctorBefore = true;
+                        }
+
+                        if(currentMarble->getType() == INFORMER && !watched){
+                            watched = true;
                         }
                     }
+
+                    if(currentPath->isTheBorder() && !doctorBefore && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
+                        specialNodeBeforeDoctor++;
+                    }
+
+                }
+
+                if(specialNodeBeforeDoctor > 1){
+                    surrounded = false;
+                }
+
+                if(surrounded){
+                    surroundedOnPath[surroundedOnIndex] = i;
+                    surroundedOnIndex++;
+                }
+
+                if(watched){
+                    watchedOnPath[watchedOnIndex] = i;
+                    watchedOnIndex++;
                 }
             }
         }
-
     }
     for(int i = 0; i < surroundedOnIndex; i++){
         for(int j = 0; j < watchedOnIndex; j++){
