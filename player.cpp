@@ -34,7 +34,6 @@ Player::Player(int player)
             while(!fichier.eof() && !readingFinished){
                 // reading line by line
                 getline(fichier, line);
-                cout << line << endl;
                 int nb = Util::split(currentMarbleData, line, ' ');
                 // if only one number, is the playerTwo number of marbles so we stop the reading
                 if(nb == 1){
@@ -97,13 +96,13 @@ bool Player::move(Node * src, Node * dst){
     if(src->getMarble()){
         // if wrong owner
         if(src->getMarble()->getOwner() != this){
-            cout << "invalid owner or source node invalid" << endl;
+            cout << "invalid owner" << endl;
             return false;
         }
         // 2 : check the dst node
         bool dstNodeIsCorrect = false;
         int * correctDestinations = src->getMarble()->getAccessibleNodes();
-        cout << "checking " << src->getMarble()->getNbComputedNodes() << " nodes";
+        //cout << "checking " << src->getMarble()->getNbComputedNodes() << " nodes" << endl;
         for(int i = 0 ; i < src->getMarble()->getNbComputedNodes(); i++){
             // If dst found then it's correct
             if(correctDestinations[i] == dst->getId()){
@@ -115,12 +114,15 @@ bool Player::move(Node * src, Node * dst){
             dst->setMarble(src->getMarble());
             src->setMarble(NULL);
             dst->getMarble()->setCurrentNode(dst->getId());
+            cout << "moved " << src->getId() << " to " << dst->getId() << endl;
         }
         else{
+            cout << "Destination node invalid (" << dst->getId() << ")" << endl;
             return false;
         }
     }
     else{
+        cout << "source node invalid (" << src->getId() << ")" << endl;
         return false;
     }
 }

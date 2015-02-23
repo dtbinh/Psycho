@@ -39,6 +39,8 @@ public:
     Path* getPath(int i);
     Path** getPaths();
     int getNbPaths();
+
+    void showPaths();
 };
 
 #endif // BOARDS_H

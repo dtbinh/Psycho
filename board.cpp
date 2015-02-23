@@ -63,7 +63,7 @@ bool Board::loadPaths(string file){
     if(fichier) // success
     {
         string line;
-        // 1st line : number of path
+        // 1st line : number of paths
         getline(fichier, line);
 
         this->nbPaths = atoi(line.c_str());
@@ -83,7 +83,12 @@ bool Board::loadPaths(string file){
 
             nbNodes = Util::split(nodeList, rest, ' ');
 
-            this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes);
+            if(atoi(pathId.c_str()) == 0){
+                this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, true);
+            }
+            else{
+                this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, false);
+            }
         }
 
         fichier.close();
@@ -110,6 +115,19 @@ int Board::getNbPaths(){
 
 Node* Board::getNode(int i){
     return nodes[i];
+}
+
+void Board::showPaths(){
+    for(int i = 0 ; i < this->getNbPaths() ; i++){
+        cout << "Path " << i << endl;
+        if(this->getPath(i)->isTheBorder()){
+            cout << " IS BORDER" << endl;
+        }
+        for(int j = 0 ; j < this->getPath(i)->getNbNodes() ; j++){
+            cout << this->getPath(i)->getNodeId(j) << " ";
+        }
+        cout << endl;
+    }
 }
 
 int Board::size(){
