@@ -76,16 +76,17 @@ void Marble::computeAccessibleNodes(){
     Board& boardInstance = Board::Instance();
     this->accessibleNodes = new int[boardInstance.size()];
     nbComputedNodes = 0;
-    bool alreadyStuckByPsychologist = false;                    // A Psychologist is locking a path
-    bool stuckByPsychologist = false;                           // A Psychologist is locking the current path
-    bool savedByPsychologist = false;                           // A Psychologist is unlocking the current path if needed be
-    int startAccessibleNodes;                                   // Number of accessible nodes before the current path
+    bool alreadyStuckByPsychologist = false;                                        // A Psychologist is locking a path
+    bool stuckByPsychologist = false;                                               // A Psychologist is locking the current path
+    bool savedByPsychologist = false;                                               // A Psychologist is unlocking the current path if needed be
+    int startAccessibleNodes;                                                       // Number of accessible nodes before the current path
 
-    stuck = false;                                              // This marble cannot move
-    Path* currentPath;                                          // Used to gain computation time and space in the code
-    Marble* currentMarble;                                      // Same
-    Path** paths = boardInstance.getPaths();                    // Same
-    int nbPath = boardInstance.getNbPaths();                    // Same
+    stuck = false;                                                                  // This marble cannot move
+
+    Path* currentPath;                                                              // Used to gain computation time and space in the code
+    Marble* currentMarble;                                                          // Same
+    Path** paths = boardInstance.getNode(this->myNode)->getPath();                  // Same
+    int nbPath = boardInstance.getNode(this->myNode)->nbPathsOfNode();              // Same
 
 
     /* browse throught all the paths
@@ -167,15 +168,15 @@ bool Marble::isCatch(){
     int watchedOnIndex = 0;
     int specialNodeBeforeDoctor;
 
-    bool surrounded;                                            // This Marble is surrounded by Doctors
-    bool watched;                                               // This Marble is watched by an Informer
+    bool surrounded;                                                                // This Marble is surrounded by Doctors
+    bool watched;                                                                   // This Marble is watched by an Informer
     bool doctorAfter;
     bool doctorBefore;
 
-    Path* currentPath;                                          // Used to gain computation time and space in the code
-    Marble* currentMarble;                                      // Same
-    Path** paths = boardInstance.getPaths();                    // Same
-    int nbPath = boardInstance.getNbPaths();
+    Path* currentPath;                                                              // Used to gain computation time and space in the code
+    Marble* currentMarble;                                                          // Same
+    Path** paths = boardInstance.getNode(this->myNode)->getPath();                  // Same
+    int nbPath = boardInstance.getNode(this->myNode)->nbPathsOfNode();              // Same
 
     for(int i = 0; i < nbPath; i++){
         currentPath = paths[i];
@@ -184,7 +185,6 @@ bool Marble::isCatch(){
         surrounded = false;
         watched = false;
         specialNodeBeforeDoctor = 0;
-        startAccessibleNodes = this->nbComputedNodes;
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
             // The currentPath contains this Marble
             if(currentPath->getNodeId(j) == this->myNode){

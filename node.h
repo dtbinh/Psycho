@@ -13,7 +13,8 @@ private :
     //Path path; // list of reachable nodes from the node
     bool special; // true if "special" (on border)
     bool deadMarble; // not on board, nodes for dead marbles
-    Path * path;
+    Path** paths;
+    int currentNbPaths;
 
 public:
     Node();
@@ -23,8 +24,10 @@ public:
     int getId();
     Marble* getMarble();
     void setMarble(Marble*);
-    Path * getPath();
-    void setPath(Path * p);
+    Path** getPath();
+    void setPath(Path** p);
+    void addPath(Path* p);
+    int nbPathsOfNode();
 };
 
 #endif // NODE_H

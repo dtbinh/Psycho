@@ -26,7 +26,7 @@ Board::Board()
         exit(EXIT_FAILURE);
     }
 
-    nodes = (Node**)malloc(sizeof(Node*) * BOARDSIZE);
+    nodes = new Node*[BOARDSIZE];
 
     for(int i = 0 ; i <= BOARDNODES ; i++){
         // special nodes        
@@ -42,7 +42,7 @@ Board::Board()
     // setPaths for all the nodes
     for(int i = 0 ; i < this->getNbPaths() ; i++){
         for(int j = 0 ; j < this->getPath(i)->getNbNodes() ; j++){
-            this->nodes[this->getPath(i)->getNodeId(j)]->setPath(this->getPath(i));
+            this->nodes[this->getPath(i)->getNodeId(j)]->addPath(this->getPath(i));
         }
     }
 
