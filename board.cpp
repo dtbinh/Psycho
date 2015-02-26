@@ -126,6 +126,15 @@ bool Board::killMarble(Marble * marbleToKill){
     }
 }
 
+// move a marble without checking constraints
+void Board::forceMove(Node * src, Node * dst){
+    dst->setMarble(src->getMarble());
+    src->setMarble(NULL);
+    dst->getMarble()->setCurrentNode(dst->getId());
+    cout << "moved " << src->getId() << " to " << dst->getId() << endl;
+}
+
+
 Path* Board::getPath(int i){
     return paths[i];
 }

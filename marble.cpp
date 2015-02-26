@@ -2,6 +2,9 @@
 #include "path.h"
 #include "board.h"
 #include <cstdlib>
+#include <iostream>
+
+using namespace std;
 
 Marble::Marble(){
 
@@ -266,10 +269,6 @@ bool Marble::isCatch(){
 void Marble::kill(){
     Board& boardInstance = Board::Instance();
     boardInstance.killMarble(this);
-}
-
-bool Marble::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
-    return false;
 }
 
 void Marble::displayAccessibleNodes(){

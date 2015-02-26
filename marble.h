@@ -32,8 +32,7 @@ public:
     Player* getOwner();
     static string getNameFromType(int t);
 
-    void kill();
-    bool respawnUnit(Node * psychologistDeathNode, int marbleWanted);
+    void kill();    
 
     bool isCatch();
 

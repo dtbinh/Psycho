@@ -1,7 +1,6 @@
 #ifndef BOARDS_H
 #define BOARDS_H
 
-#include <iostream>
 #include <string>
 #include "node.h"
 
@@ -44,6 +43,8 @@ public:
     int getNbPaths();
 
     bool killMarble(Marble * marbleToKill);
+
+    void forceMove(Node * src, Node * dst); // move a marble without checking constraints
 
     void showPaths();
 };

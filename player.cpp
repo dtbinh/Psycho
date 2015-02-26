@@ -3,9 +3,11 @@
 #include "node.h"
 #include "board.h"
 #include "util.h"
+#include "path.h"
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 
 
@@ -28,9 +30,10 @@ Player::Player(int player)
         int dispId = 0; // id for disposition array
 
         int currentMarbleData[3];
-        if(player == PLAYERONE){
+        if(player == PLAYERONE){            
             Board& boardInstance = Board::Instance();
             this->disposition = new Marble*[playerOneMarbles];
+            whoAmI = PLAYERONE;
             while(!fichier.eof() && !readingFinished){
                 // reading line by line
                 getline(fichier, line);
@@ -48,6 +51,7 @@ Player::Player(int player)
             nbMarbles = playerOneMarbles;
         }
         else if(player == PLAYERTWO){
+            whoAmI = PLAYERTWO;
             // seek number of marbles for player 2
             for(int i = 0 ; i < playerOneMarbles ; i++){
                 getline(fichier, line);
@@ -63,7 +67,7 @@ Player::Player(int player)
             while(!fichier.eof() && !readingFinished){
                 // reading line by line
                 getline(fichier, line);
-                int nb = Util::split(currentMarbleData, line, ' ');
+                Util::split(currentMarbleData, line, ' ');
                 disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2]);
                 boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
                 dispId++;
@@ -92,6 +96,7 @@ Player::~Player()
 
 // Check source node and destination node and do the move if possible. Return false if invalid move
 bool Player::move(Node * src, Node * dst){
+    Board& boardInstance = Board::Instance();
     // 1) if src node exists
     if(src->getMarble()){
         // if wrong owner
@@ -111,10 +116,7 @@ bool Player::move(Node * src, Node * dst){
         }
         // 3 if correct, do the move
         if(dstNodeIsCorrect){
-            dst->setMarble(src->getMarble());
-            src->setMarble(NULL);
-            dst->getMarble()->setCurrentNode(dst->getId());
-            cout << "moved " << src->getId() << " to " << dst->getId() << endl;
+            boardInstance.forceMove(src, dst);
             // WHEN MOVED
             // A) CHECK SUICIDE
             if(dst->getMarble()->isCatch()){
@@ -124,7 +126,19 @@ bool Player::move(Node * src, Node * dst){
             // B) CHECK KILL
             else{
                 if(dst->getMarble()->getType() == DOCTOR || dst->getMarble()->getType() == INFORMER){
-                    // TODO
+                    // check paths and check isCatch for all annemys in it
+                    for(int i = 0 ; i < dst->nbPathsOfNode() ; i++){
+                        Path * currentPath = dst->getPath()[i];
+                        for(int j = 0 ; j < currentPath->getNbNodes() ; j++){
+                            Marble * currentMarble = boardInstance.getNode(currentPath->getNodeId(j))->getMarble();
+                            // if marble on current node check if catch
+                            if(currentMarble){
+                                if(currentMarble->isCatch()){
+                                    currentMarble->kill();
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -137,6 +151,26 @@ bool Player::move(Node * src, Node * dst){
         cout << "source node invalid (" << src->getId() << ")" << endl;
         return false;
     }
+    return false;
+}
+
+// Move the first dead marble wanted encountered to the old psychologist node
+// return false if can't
+bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
+    Board& boardInstance = Board::Instance();
+    // Seek for the marble wanted
+    for(int i = BOARDNODES + 1 ; i < BOARDSIZE ; i++){
+        Marble * currentMarble = boardInstance.getNode(i)->getMarble();
+        if(currentMarble){
+            if(currentMarble->getType() == marbleWanted){
+                cout << "Respawning " << Marble::getNameFromType(currentMarble->getType()) << " to node " << psychologistDeathNode->getId() << endl;
+                boardInstance.forceMove(boardInstance.getNode(i), psychologistDeathNode);
+                return true;
+            }
+        }
+    }
+    cout << "Couldn't respawn " << Marble::getNameFromType(marbleWanted) << endl;
+    return false;
 }
 
 void Player::computePossibilities(){
@@ -154,4 +188,21 @@ void Player::displayMarbles(){
    }
 }
 
+int Player::getWhoAmI(){
+    return whoAmI;
+}
+
+// affiche au format des fichiers txt de marbles
+string Player::getStringMarblesForFile(){
+    stringstream sstm;
+    // 1) nbMarbles
+    sstm << nbMarbles << endl;
+    // 2) Write player / NodeID / MarbleType
+    for(int i = 0 ; i < nbMarbles ; i++){
+        sstm << whoAmI << " " << disposition[i]->getCurrentNode() << " " << disposition[i]->getType() << endl;
+    }
+
+
+    return sstm.str();
+}
 
