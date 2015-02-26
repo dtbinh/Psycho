@@ -4,8 +4,8 @@ LIBS = -lm -lpthread -ldl
 
 all : main
 
-main : main.o board.o path.o node.o player.o marble.o
-	$(CC) -o psycho main.o board.o path.o node.o player.o marble.o $(LIBS)
+main : main.o board.o path.o node.o player.o marble.o util.o
+	$(CC) -o psycho main.o board.o path.o node.o player.o marble.o util.o $(LIBS)
 
 main.o : main.cpp board.h
 	$(CC) -c -o $@ $< $(CFLAGS) 
@@ -23,6 +23,9 @@ player.o : player.cpp player.h marble.h board.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
 marble.o : marble.cpp marble.h path.h board.h player.h
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+util.o : util.cpp util.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 

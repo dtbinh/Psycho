@@ -15,7 +15,7 @@ class Marble;
 
 using namespace std;
 
-const string DATA_PATH = "../psychocpp/data/";
+const string DATA_PATH = "./data/";
 
 class Board
 {

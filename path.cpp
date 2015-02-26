@@ -16,11 +16,11 @@ Path::~Path()
 
 }
 
-Path::getNbNodes(){
+int Path::getNbNodes(){
     return nbNodes;
 }
 
-Path::getNodeId(int i){
+int Path::getNodeId(int i){
     return path[i];
 }
 
