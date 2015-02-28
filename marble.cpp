@@ -82,6 +82,7 @@ void Marble::computeAccessibleNodes(){
     bool alreadyStuckByPsychologist = false;                                        // A Psychologist is locking a path
     bool stuckByPsychologist = false;                                               // A Psychologist is locking the current path
     bool savedByPsychologist = false;                                               // A Psychologist is unlocking the current path if needed be
+    bool marbleEncountered = false;                                                 // A Marble have been encountered, no more accessible nodes in this direction of the path
     int startAccessibleNodes;                                                       // Number of accessible nodes before the current path
 
     stuck = false;                                                                  // This marble cannot move
@@ -104,41 +105,51 @@ void Marble::computeAccessibleNodes(){
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
             // The currentPath contains this Marble
             if(currentPath->getNodeId(j) == myNode){
+
+                marbleEncountered = false;
                 // Browse the rest of the Path
                 for(int k = j+1; k < currentPath->getNbNodes(); k++){
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
-                    // There is no Marble in that node, so that node is added to the accessibleNodes
+                    // There is no Marble in that node and no Marble encountered, so that node is added to the accessibleNodes
                     if(currentMarble == NULL){
-                        accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
-                        nbComputedNodes++;
+                        if(!marbleEncountered){
+                            accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
+                            nbComputedNodes++;
+                        }
                         // There is a Marble in that node
                     }else if(currentMarble->getType() == PSYCHOLOGIST){
                         if(currentMarble->getOwner() != this->owner){
                             stuckByPsychologist = true;                 // There is a Psychologist locking this path
                         }else{
-                            savedByPsychologist = true;                  // There is a Psychologist unlocking this path
+                            savedByPsychologist = true;                 // There is a Psychologist unlocking this path
                         }
                         continue;                                       // Marbles can "Jump" above a Psychologist
                     }else{
-                        break;                                          // Marble can't "Jump" above other marbles
+                        marbleEncountered = true;                       // Marble can't "Jump" above other marbles
                     }
                 }
 
+                marbleEncountered = false;
                 //Browse the begining of the Path
                 for(int k = j-1; k >=0 ; k--){
                     currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
+                    currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
+                    // There is no Marble in that node and no Marble encountered, so that node is added to the accessibleNodes
                     if(currentMarble == NULL){
-                        accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
-                        nbComputedNodes++;
+                        if(!marbleEncountered){
+                            accessibleNodes[nbComputedNodes] = currentPath->getNodeId(k);
+                            nbComputedNodes++;
+                        }
+                        // There is a Marble in that node
                     }else if(currentMarble->getType() == PSYCHOLOGIST){
                         if(currentMarble->getOwner() != this->owner){
-                            stuckByPsychologist = true;
+                            stuckByPsychologist = true;                 // There is a Psychologist locking this path
                         }else{
-                            savedByPsychologist = true;
+                            savedByPsychologist = true;                 // There is a Psychologist unlocking this path
                         }
-                        continue;
+                        continue;                                       // Marbles can "Jump" above a Psychologist
                     }else{
-                        break;
+                        marbleEncountered = true;                       // Marble can't "Jump" above other marbles
                     }
                 }
                 // A Psychologist is blocking this Path
