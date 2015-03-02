@@ -25,12 +25,12 @@ int main()
     Util::updatePositionsTxt(blanc, noir);
     system("pause");
     // boucle de jeu
-    while(!blanc->hasLost() || !noir->hasLost()){
+    while(!blanc->hasLost() && !noir->hasLost()){
         blanc->play();
         noir->computePossibilities();
         blanc->computePossibilities();
         Util::updatePositionsTxt(blanc, noir);
-        if(!blanc->hasLost() || !noir->hasLost()){
+        if(!blanc->hasLost() && !noir->hasLost()){
             noir->play();
             noir->computePossibilities();
             blanc->computePossibilities();

@@ -109,6 +109,41 @@ bool Board::loadPaths(string file){
     }
 }
 
+bool Board::checkDeaths(Player * me, Node * dst){
+    // A) CHECK SUICIDE
+    if(dst->getMarble()->isCatch()){
+        cout << "(" << dst->getId() << ") " << Marble::getNameFromType(dst->getMarble()->getType()) << " suicided !" << endl;
+        dst->getMarble()->kill();
+        // if psychologist suicided the other player can revive
+        if(dst->getMarble()->getType() == PSYCHOLOGIST){
+            Player * p = me->getEnnemy();
+            p->askRespawn(dst);
+        }
+    }
+    // B) CHECK KILL
+    else{
+        if(dst->getMarble()->getType() == DOCTOR || dst->getMarble()->getType() == INFORMER){
+            // check paths and check isCatch for all annemys in it
+            for(int i = 0 ; i < dst->nbPathsOfNode() ; i++){
+                Path * currentPath = dst->getPath()[i];
+                for(int j = 0 ; j < currentPath->getNbNodes() ; j++){
+                    Marble * currentMarble = this->getNode(currentPath->getNodeId(j))->getMarble();
+                    // if marble on current node check if catch
+                    if(currentMarble){
+                        if(currentMarble->isCatch()){
+                            currentMarble->kill();
+                            // If the marble killed was a psychologist the player can revive a marble
+                            if(currentMarble->getType()==PSYCHOLOGIST){
+                                me->askRespawn(this->getNode(currentPath->getNodeId(j)));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 bool Board::killMarble(Marble * marbleToKill){
     if(marbleToKill != NULL){
         Node * marbleNode = nodes[marbleToKill->getCurrentNode()];
