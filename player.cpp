@@ -122,6 +122,14 @@ void Player::play(){
     }
 }
 
+Player * Player::getEnnemy(){
+    return this->ennemy;
+}
+
+void Player::setEnnemy(Player * p){
+    this->ennemy = p;
+}
+
 // Check if psychopath is dead
 bool Player::hasLost(){
     for(int i = 0 ; i < nbMarbles ; i++){
@@ -167,6 +175,11 @@ bool Player::move(Node * src, Node * dst){
             if(dst->getMarble()->isCatch()){
                 cout << "(" << dst->getId() << ") " << Marble::getNameFromType(dst->getMarble()->getType()) << " suicided !" << endl;
                 dst->getMarble()->kill();
+                // if psychologist suicided the other player can revive
+                if(dst->getMarble()->getType() == PSYCHOLOGIST){
+                    Player * p = this->getEnnemy();
+                    p->askRespawn(dst);
+                }
             }
             // B) CHECK KILL
             else{
@@ -180,6 +193,10 @@ bool Player::move(Node * src, Node * dst){
                             if(currentMarble){
                                 if(currentMarble->isCatch()){
                                     currentMarble->kill();
+                                    // If the marble killed was a psychologist the player can revive a marble
+                                    if(currentMarble->getType()==PSYCHOLOGIST){
+                                        this->askRespawn(boardInstance.getNode(currentPath->getNodeId(j)));
+                                    }
                                 }
                             }
                         }
@@ -200,6 +217,22 @@ bool Player::move(Node * src, Node * dst){
     return false;
 }
 
+void Player::askRespawn(Node * psychologistDeathNode){
+    int choice=0;
+    if(this->isHuman){
+        cout << "Congrats, you can revive one of your marbles !" << endl;
+        cout << "please type the number of the marble you want" << endl;
+        cout << "1 - Informer" << endl;
+        cout << "2 - Doctor" << endl;
+        cout << "3 - Psychologist" << endl;
+        cin >> choice;
+    }
+    else{
+
+    }
+    respawnUnit(psychologistDeathNode, choice);
+}
+
 // Move the first dead marble wanted encountered to the old psychologist node
 // return false if can't
 bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
@@ -208,7 +241,7 @@ bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
     for(int i = BOARDNODES + 1 ; i < BOARDSIZE ; i++){
         Marble * currentMarble = boardInstance.getNode(i)->getMarble();
         if(currentMarble){
-            if(currentMarble->getType() == marbleWanted){
+            if(currentMarble->getType() == marbleWanted && currentMarble->getOwner() == this){
                 cout << "Respawning " << Marble::getNameFromType(currentMarble->getType()) << " to node " << psychologistDeathNode->getId() << endl;
                 boardInstance.forceMove(boardInstance.getNode(i), psychologistDeathNode);
                 return true;

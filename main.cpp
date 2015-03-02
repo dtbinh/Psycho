@@ -14,6 +14,9 @@ int main()
     Player* blanc = new Player(PLAYERONE, true);
     Player* noir = new Player(PLAYERTWO, true);
 
+    blanc->setEnnemy(noir);
+    noir->setEnnemy(blanc);
+
     Util::updatePositionsTxt(blanc, noir);
     system("pause");
 

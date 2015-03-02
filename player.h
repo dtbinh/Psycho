@@ -20,6 +20,7 @@ private:
     int nbMarbles;
     int whoAmI;
     bool isHuman;
+    Player * ennemy;
 public:
     Player(int, bool);
     ~Player();
@@ -28,7 +29,11 @@ public:
     bool move(Node * src, Node * dst); // move a marble. Return false if impossible, true if move done.    
     void computePossibilities();
 
+    void askRespawn(Node * psychologistDeathNode);
     bool respawnUnit(Node * psychologistDeathNode, int marbleWanted);
+
+    Player * getEnnemy();
+    void setEnnemy(Player * p);
 
     int getWhoAmI();
 

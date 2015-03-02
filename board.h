@@ -23,13 +23,13 @@ private:
     //Board& operator=(const Board&){}
     //Board (const Board&){}
 
-    static Board m_instance;
+    static Board m_instance; // There is only one instance of the class Board, accessible with Instance()
     Board();
     ~Board();
 
-    Node** nodes;
-    Path** paths;
-    int nbPaths;
+    Node** nodes; // nodes
+    Path** paths; // paths
+    int nbPaths; // number of paths (27)
     int firstFreeDeadMarble;
 
 public:
