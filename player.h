@@ -35,6 +35,8 @@ public:
     Player * getEnnemy();
     void setEnnemy(Player * p);
 
+    bool fillDecisionTree();
+
     int getWhoAmI();
 
     // Check if psychopath is dead

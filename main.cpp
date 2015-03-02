@@ -11,8 +11,8 @@ int main()
 {
     Board& theboard = Board::Instance();
     cout << "Board created ! With " << theboard.size() << " nodes." << endl;
-    Player* blanc = new Player(PLAYERONE, true);
-    Player* noir = new Player(PLAYERTWO, true);
+    Player* blanc = new Player(PLAYERONE);
+    Player* noir = new Player(PLAYERTWO);
 
     blanc->setEnnemy(noir);
     noir->setEnnemy(blanc);
@@ -20,24 +20,30 @@ int main()
     Util::updatePositionsTxt(blanc, noir);
     system("pause");
 
-    while(!blanc->hasLost() && !noir->hasLost()){
-        noir->computePossibilities();
-        blanc->computePossibilities();
-        blanc->play();
-        Util::updatePositionsTxt(blanc, noir);
-        noir->computePossibilities();
-        blanc->computePossibilities();
-        // check if someone wins (white suicided or white win)
-        if(!blanc->hasLost() && !noir->hasLost()){
-            noir->play();
-            Util::updatePositionsTxt(blanc, noir);
-        }
-    }
-    string victory;
-    if(blanc->hasLost()) victory = "black";
-    else victory = "white";
+    noir->computePossibilities();
+    blanc->computePossibilities();
+    blanc->move(theboard.getNode(44), theboard.getNode(22));
+    blanc->computePossibilities();
+    noir->computePossibilities();
+    Util::updatePositionsTxt(blanc, noir);
+    system("pause");
+    noir->move(theboard.getNode(64), theboard.getNode(31));
+    noir->computePossibilities();
+    blanc->computePossibilities();
+    Util::updatePositionsTxt(blanc, noir);
+    system("pause");
+    noir->move(theboard.getNode(31), theboard.getNode(33));
+    noir->computePossibilities();
+    blanc->computePossibilities();
+    Util::updatePositionsTxt(blanc, noir);
+    system("pause");
+    // joueur noir essaye de res son doc
 
-    cout << "Game is over, and " << victory << " wins !" << endl;
+    noir->respawnUnit(theboard.getNode(51), DOCTOR);
+
+    Util::updatePositionsTxt(blanc, noir);
+
+    blanc->fillDecisionTree();
 
     return 0;
 }
