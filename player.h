@@ -29,6 +29,8 @@ public:
 
     bool respawnUnit(Node * psychologistDeathNode, int marbleWanted);
 
+    bool fillDecisionTree();
+
     int getWhoAmI();
 };
 

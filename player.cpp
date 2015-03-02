@@ -4,6 +4,7 @@
 #include "board.h"
 #include "util.h"
 #include "path.h"
+#include "tree.h"
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
@@ -206,3 +207,20 @@ string Player::getStringMarblesForFile(){
     return sstm.str();
 }
 
+bool Player::fillDecisionTree(){
+    this->displayMarbles();
+
+    Tree* root = new Tree();
+    root->createNextSons(0);
+    Tree* son;
+    Marble* currentMarble;
+    for(int i = 0; i < this->nbMarbles; i++){
+        currentMarble = this->disposition[i];
+        for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
+            son = new Tree(root, new Move(currentMarble->getCurrentNode(), currentMarble->getAccessibleNodes()[j]));
+            root->addSon(son);
+        }
+    }
+
+    root->displayTree();
+}
