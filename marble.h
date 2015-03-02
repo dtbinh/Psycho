@@ -38,6 +38,7 @@ public:
 
     int getType();
     int getNbComputedNodes();
+    bool isDead(); // check if node > 162 (dead)
 
 private:
     void computeAccessibleNodesForPath(Path*, int marbleId);

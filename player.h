@@ -19,8 +19,9 @@ private:
     Marble** disposition;
     int nbMarbles;
     int whoAmI;
+    bool isHuman;
 public:
-    Player(int);
+    Player(int, bool);
     ~Player();
     void displayMarbles(); // show marbles in console
     string getStringMarblesForFile();
@@ -32,6 +33,12 @@ public:
     bool fillDecisionTree();
 
     int getWhoAmI();
+
+    // Check if psychopath is dead
+    bool hasLost();
+
+    // if human ask to play, else AI plays (doing a move)
+    void play();
 };
 
 #endif // PLAYER_H

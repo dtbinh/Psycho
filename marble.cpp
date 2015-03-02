@@ -52,6 +52,11 @@ int Marble::getNbComputedNodes(){
     return nbComputedNodes;
 }
 
+// Return true if marble is dead
+bool Marble::isDead(){
+    return myNode > 162;
+}
+
 string Marble::getNameFromType(int t){
     switch(t){
     case PSYCHOPATH :

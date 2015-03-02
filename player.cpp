@@ -12,8 +12,10 @@
 
 
 
-Player::Player(int player)
+// set human to true if human, false if AI
+Player::Player(int player, bool human)
 {
+    this->isHuman = human;
     string file = DATA_PATH + "marbles.txt";
     ifstream fichier;
     fichier.open(file.c_str(), ios::in); // opening file in read only
@@ -95,9 +97,52 @@ Player::~Player()
 
 }
 
+void Player::play(){
+    Board& boardInstance = Board::Instance();
+    int idSrc;
+    int idDst;
+    bool correctMove = false;
+    // HUMAN PLAYER
+    if(this->isHuman){
+        while(!correctMove){
+            cout << "Player " << this->whoAmI << " : Do a move !" << endl;
+            cout << "From ?" << endl;
+            cin >> idSrc;
+            cout << "To ?" << endl;
+            cin >> idDst;
+            correctMove = this->move(boardInstance.getNode(idSrc), boardInstance.getNode(idDst));
+            if(!correctMove){
+                cout << "INCORRECT MOVE, please try again" << endl;
+            }
+        }
+
+    }
+    // AI PLAYER
+    else{
+
+    }
+}
+
+// Check if psychopath is dead
+bool Player::hasLost(){
+    for(int i = 0 ; i < nbMarbles ; i++){
+        if(disposition[i]->getType() == PSYCHOPATH){
+            if(disposition[i]->isDead()){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 // Check source node and destination node and do the move if possible. Return false if invalid move
 bool Player::move(Node * src, Node * dst){
     Board& boardInstance = Board::Instance();
+    // 0 if nodes exist
+    if(!src || !dst){
+        cout << "nodes doesn't exist !" << endl;
+        return false;
+    }
     // 1) if src node exists
     if(src->getMarble()){
         // if wrong owner
@@ -142,6 +187,7 @@ bool Player::move(Node * src, Node * dst){
                     }
                 }
             }
+            return true;
         }
         else{
             cout << "Destination node invalid (" << dst->getId() << ")" << endl;
