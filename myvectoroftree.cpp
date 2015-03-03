@@ -5,7 +5,7 @@
 using namespace std;
 
 // Recursively set index of nodes
-setIndex(node* current){
+void setIndex(node* current){
     if(current != NULL){
         if(current->previous != NULL){
             current->index = current->previous->index + 1;
@@ -17,7 +17,7 @@ setIndex(node* current){
 }
 
 // Recursively free the linkedList nodes
-setFree(node* current){
+void setFree(node* current){
     if(current != NULL){
         node* tmp = current->next;
         free(current);

@@ -142,6 +142,7 @@ bool Board::checkDeaths(Player * me, Node * dst){
             }
         }
     }
+    return false;
 }
 
 bool Board::killMarble(Marble * marbleToKill){

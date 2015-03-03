@@ -255,7 +255,7 @@ string Player::getStringMarblesForFile(){
     return sstm.str();
 }
 
-bool Player::fillDecisionTree(){
+void Player::fillDecisionTree(){
     this->displayMarbles();
 
     Tree* root = new Tree();

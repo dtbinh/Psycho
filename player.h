@@ -35,7 +35,7 @@ public:
     Player * getEnnemy();
     void setEnnemy(Player * p);
 
-    bool fillDecisionTree();
+    void fillDecisionTree();
 
     int getWhoAmI();
 
