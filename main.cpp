@@ -22,7 +22,10 @@ int main()
     noir->computePossibilities();
     blanc->computePossibilities();
 
-    Util::updatePositionsTxt(blanc, noir);
+    noir->fillDecisionTree();
+    blanc->fillDecisionTree();
+
+   /* Util::updatePositionsTxt(blanc, noir);
     system("pause");
     // boucle de jeu
     while(!blanc->hasLost() && !noir->hasLost()){
@@ -48,7 +51,7 @@ int main()
 
     Util::updatePositionsTxt(blanc, noir);
 
-    blanc->fillDecisionTree();
+    blanc->fillDecisionTree();*/
 
     return 0;
 }
