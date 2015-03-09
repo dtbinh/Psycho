@@ -1,3 +1,23 @@
+/**
+    Psychopath - Board Game
+
+    Copyright (C) <2015>  <Olivier Perriquet>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include "marble.h"
 #include "player.h"
 #include "node.h"
@@ -52,6 +72,9 @@ Player::Player(int player, bool human)
                 }
             }
             nbMarbles = playerOneMarbles;
+            for(int i = 0; i < nbMarbles; i++){
+                Util::setMarbleInt(i, disposition[i]);
+            }
         }
         else if(player == PLAYERTWO){
             whoAmI = PLAYERTWO;
@@ -76,6 +99,9 @@ Player::Player(int player, bool human)
                 dispId++;
             }
             nbMarbles = playerTwoMarbles;
+            for(int i = 0; i < nbMarbles; i++){
+                Util::setMarbleInt(i+13, disposition[i]);
+            }
         }
         else{
             // ?
@@ -255,7 +281,7 @@ string Player::getStringMarblesForFile(){
     return sstm.str();
 }
 
-bool Player::fillDecisionTree(){
+void Player::fillDecisionTree(){
     this->displayMarbles();
 
     Tree* root = new Tree();
