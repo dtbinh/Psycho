@@ -42,6 +42,8 @@ public:
     Path** getPaths();
     int getNbPaths();
 
+    bool checkDeaths(Player * me, Node * dst); // check suicides and kills and do respawns and kills
+
     bool killMarble(Marble * marbleToKill);
 
     void forceMove(Node * src, Node * dst); // move a marble without checking constraints
