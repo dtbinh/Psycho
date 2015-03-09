@@ -21,7 +21,9 @@ SOURCES += main.cpp \
     path.cpp \
     player.cpp \
     board.cpp \
-    util.cpp
+    util.cpp \
+    myvectoroftree.cpp \
+    tree.cpp
 
 HEADERS += \
     marble.h \
@@ -29,4 +31,6 @@ HEADERS += \
     path.h \
     player.h \
     board.h \
-    util.h
+    util.h \
+    myvectoroftree.h \
+    tree.h
