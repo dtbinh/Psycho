@@ -1,32 +1,28 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-01-22T15:24:58
-#
-#-------------------------------------------------
-
-QT       += core
-
-QT       -= gui
-
-TARGET = psychocpp
-CONFIG   += console
-CONFIG   -= app_bundle
-
 TEMPLATE = app
-
+CONFIG += console
+CONFIG -= app_bundle
+CONFIG -= qt
 
 SOURCES += main.cpp \
+    board.cpp \
     marble.cpp \
+    myvectoroftree.cpp \
     node.cpp \
     path.cpp \
     player.cpp \
-    board.cpp \
+    tree.cpp \
     util.cpp
 
+include(deployment.pri)
+qtcAddDeployment()
+
 HEADERS += \
+    board.h \
     marble.h \
+    myvectoroftree.h \
     node.h \
     path.h \
     player.h \
-    board.h \
+    tree.h \
     util.h
+
