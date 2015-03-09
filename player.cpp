@@ -52,6 +52,9 @@ Player::Player(int player, bool human)
                 }
             }
             nbMarbles = playerOneMarbles;
+            for(int i = 0; i < nbMarbles; i++){
+                Util::setMarbleInt(i, disposition[i]);
+            }
         }
         else if(player == PLAYERTWO){
             whoAmI = PLAYERTWO;
@@ -76,6 +79,9 @@ Player::Player(int player, bool human)
                 dispId++;
             }
             nbMarbles = playerTwoMarbles;
+            for(int i = 0; i < nbMarbles; i++){
+                Util::setMarbleInt(i+13, disposition[i]);
+            }
         }
         else{
             // ?

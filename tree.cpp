@@ -9,6 +9,7 @@ using namespace std;
 Move::Move(int from, int to){
     this->fromNode = from;
     this->toNode = to;
+    this->consequence = NULL;
 }
 
 Tree::Tree()

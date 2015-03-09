@@ -7,10 +7,8 @@
 
 using namespace std;
 
-Util::Util()
-{
-
-}
+Marble** Util::intToMarble = new Marble*[NB_TOTAL_MARBLE];
+int Util::test = 0;
 
 int Util::split(int * destination, string chaine, char separateur)
 {
@@ -46,8 +44,21 @@ bool Util::updatePositionsTxt(Player * p1, Player * p2){
     return false;
 }
 
-Util::~Util()
-{
+Marble* Util::getMarbleFromInt(int index){
+    Util::test++;
+    if(index >= NB_TOTAL_MARBLE){
+        return NULL;
+    }else{
+        return Util::intToMarble[index];
+    }
+}
 
+bool Util::setMarbleInt(int index, Marble *marble){
+    if(index >= NB_TOTAL_MARBLE){
+        return false;
+    }else{
+        Util::intToMarble[index] = marble;
+        return true;
+    }
 }
 
