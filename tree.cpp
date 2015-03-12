@@ -39,6 +39,7 @@ Tree::Tree()
     father = pT_NULL;
     fatherMove = NULL;
     sons = NULL;
+    value = -1;
 }
 
 Tree::Tree(pTree father){
@@ -47,6 +48,7 @@ Tree::Tree(pTree father){
     this->father = father;
     fatherMove = NULL;
     sons = NULL;
+    value = -1;
 }
 
 Tree::Tree(pTree father, Move *fatherMove){
@@ -55,6 +57,7 @@ Tree::Tree(pTree father, Move *fatherMove){
     this->father = father;
     this->fatherMove = fatherMove;
     sons = NULL;
+    value = -1;
 }
 
 Tree::~Tree()
@@ -177,6 +180,19 @@ void Tree::addSon(pTree son){
     son->father = this;
     son->computeLevel();
     sons->addTree(son);
+}
+
+// Seek vertically the max value of all sons
+int Tree::getMaxValue(){
+    int sonValue;
+    for(int i = 0 ; i < nbSons ; i++){
+        sonValue = sons->getTree(i)->getMaxValue();
+        // seek max
+        if(value < sonValue){
+            value = sonValue;
+        }
+    }
+    return value;
 }
 
 /**

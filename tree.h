@@ -72,6 +72,8 @@ public:
 
     void deleteAllSons();
 
+    int getMaxValue();
+
     void pruneTree(int sonToPrune);
 
     pTree father;
