@@ -43,12 +43,12 @@ public:
     ~Marble();
 
     void computeAccessibleNodes();
-    void setCurrentNode(int nodeId);
+    void setMyNode(int nodeId);
     void setOwner(Player*);
     void displayAccessibleNodes();
 
     int* getAccessibleNodes();
-    int getCurrentNode();
+    int getMyNode();
     Player* getOwner();
     static string getNameFromType(int t);
 

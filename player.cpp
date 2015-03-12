@@ -258,7 +258,7 @@ void Player::displayMarbles(){
    string name;
    for(int i = 0; i < NBMARBLES; i++){
        name = Marble::getNameFromType(disposition[i]->getType());
-       cout << "(" << name << ") " << disposition[i]->getCurrentNode() << endl;
+       cout << "(" << name << ") " << disposition[i]->getMyNode() << endl;
        disposition[i]->displayAccessibleNodes();
    }
 }
@@ -274,7 +274,7 @@ string Player::getStringMarblesForFile(){
     sstm << nbMarbles << endl;
     // 2) Write player / NodeID / MarbleType
     for(int i = 0 ; i < nbMarbles ; i++){
-        sstm << whoAmI << " " << disposition[i]->getCurrentNode() << " " << disposition[i]->getType() << endl;
+        sstm << whoAmI << " " << disposition[i]->getMyNode() << " " << disposition[i]->getType() << endl;
     }
 
 
@@ -291,7 +291,7 @@ void Player::fillDecisionTree(){
     for(int i = 0; i < this->nbMarbles; i++){
         currentMarble = this->disposition[i];
         for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
-            son = new Tree(root, new Move(currentMarble->getCurrentNode(), currentMarble->getAccessibleNodes()[j]));
+            son = new Tree(root, new Move(currentMarble->getMyNode(), currentMarble->getAccessibleNodes()[j]));
             root->addSon(son);
         }
     }

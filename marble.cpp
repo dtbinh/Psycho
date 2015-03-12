@@ -36,34 +36,60 @@ Marble::Marble(int nodeId, int type)
     this->type = type;
     this->hadPsychologist = false;
     this->stuck = false;
-    //this->owner = owner;
 }
 
 Marble::~Marble()
 {
-
+    delete [] computeAccessibleNodes();
 }
 
-int Marble::getCurrentNode(){
-    return myNode;
-}
 
+/**
+ * @brief Marble::getAccessibleNodes
+ * @return the array that contains the id of all the nodes accessible from this Marble
+ * Use condition : the array returned by this method is updated by the computeAccessibleNodes method
+ * if a Marble's position have changed it is advisable to call computeAccessibleNodes before calling this method
+ */
 int* Marble::getAccessibleNodes(){
     return accessibleNodes;
 }
 
-void Marble::setCurrentNode(int nodeId){
+/**
+ * @brief Marble::getMyNode
+ * @return the Node'id that contains this Marble
+ */
+int Marble::getMyNode(){
+    return myNode;
+}
+
+/**
+ * @brief Marble::setMyNode
+ * @param nodeId integer representation of the Node that contains this Marble
+ */
+void Marble::setMyNode(int nodeId){
     myNode = nodeId;
 }
 
+/**
+ * @brief Marble::setOwner
+ * @param owner, reference to the Player that owns this Marble
+ */
 void Marble::setOwner(Player* owner){
     this->owner = owner;
 }
 
+/**
+ * @brief Marble::getOwner
+ * @return the reference to the Player that owns this Marble
+ */
 Player* Marble::getOwner(){
     return this->owner;
 }
 
+/**
+ * @brief Marble::getType
+ * @return an Integer that represent the type of this Marble, Types defined in Marble.h file
+ */
 int Marble::getType(){
     return type;
 }
@@ -72,11 +98,19 @@ int Marble::getNbComputedNodes(){
     return nbComputedNodes;
 }
 
-// Return true if marble is dead
+/**
+ * @brief Marble::isDead
+ * @return true if this Marble is dead (outside of the visible board), false otherwise
+ */
 bool Marble::isDead(){
     return myNode > 162;
 }
 
+/**
+ * @brief Marble::getNameFromType return the string representation of the parameter
+ * @param integer t represent a type of Marble, different types are defined in Marble.h file
+ * @return
+ */
 string Marble::getNameFromType(int t){
     switch(t){
     case PSYCHOPATH :
@@ -95,8 +129,10 @@ string Marble::getNameFromType(int t){
 
 
 /**
- * Compute the nodes accessible by this marble
- * @brief Marble::computeAccessibleNodes
+ * @brief Marble::computeAccessibleNodes Compute the nodes accessible by this marble
+ * browse throught all the paths of this Marble's Node
+ * side effect of this method : fill a static array (accessibleNodes) with the nodes accessible
+ * side effect of this method : set the value of an integer (nbComputedNodes) to the number of nodes accessible
  */
 void Marble::computeAccessibleNodes(){
 
@@ -257,9 +293,13 @@ void Marble::computeAccessibleNodes(){
     }
 }
 
+/**
+ * @brief Marble::isCatch this method browse throught all the paths of this marble's node
+ * If this marble is surrounded by two DOCTOR and watched by an INFORMER on another path it is captured
+ * @return true if the marble, on which isCatch is called, is captured. false otherwise
+ */
 bool Marble::isCatch(){
 
-    cout<< "enterer isCatch()" << endl;
     Board& boardInstance = Board::Instance();
     int surroundedOnPath[NB_CROSSING_PATHS];
     int surroundedOnIndex = 0;
@@ -278,7 +318,6 @@ bool Marble::isCatch(){
     int nbPath = boardInstance.getNode(this->myNode)->nbPathsOfNode();              // Same
 
     for(int i = 0; i < nbPath; i++){
-        cout << "Path : " << i << endl;
         currentPath = paths[i];
         doctorAfter = false;
         doctorBefore = false;
@@ -288,8 +327,6 @@ bool Marble::isCatch(){
         for(int j = 0 ; currentPath != NULL && j < currentPath->getNbNodes(); j++){
             // The currentPath contains this Marble
             if(currentPath->getNodeId(j) == this->myNode){
-
-                cout << "Me : " << this->myNode << endl;
 
                 if(!currentPath->isTheBorder()){
 
@@ -330,17 +367,8 @@ bool Marble::isCatch(){
                         }
                     }
 
-                    if(surrounded){
-                        surroundedOnPath[surroundedOnIndex] = i;
-                        surroundedOnIndex++;
-                    }
-
-                    if(watched){
-                        watchedOnPath[watchedOnIndex] = i;
-                        watchedOnIndex++;
-                    }
-
                 }else{
+
                     for(int k = j+1; k != j; k = (k+1)%currentPath->getNbNodes() ){
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
 
@@ -358,8 +386,11 @@ bool Marble::isCatch(){
                             }
                         }
 
-                        if(!doctorAfter && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
+                        if(!doctorAfter && !surrounded && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
                             specialNodeBeforeDoctor++;
+                            if(this->myNode == 3){
+                                cout << "avant? : " << !doctorBefore <<",nodeId : " << currentPath->getNodeId(k) << ", nbSpecial : " << specialNodeBeforeDoctor << endl;
+                            }
                         }
 
                     }
@@ -381,31 +412,32 @@ bool Marble::isCatch(){
                             }
                         }
 
-                        if(!doctorBefore && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
+                        if(!doctorBefore && !surrounded && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
                             specialNodeBeforeDoctor++;
                         }
-
                     }
+                }
 
-                    if(specialNodeBeforeDoctor > 1){
-                        surrounded = false;
-                    }
+                if(specialNodeBeforeDoctor > 1){
+                    surrounded = false;
+                }
 
-                    if(surrounded){
-                        surroundedOnPath[surroundedOnIndex] = i;
-                        surroundedOnIndex++;
-                    }
+                if(surrounded){
+                    surroundedOnPath[surroundedOnIndex] = i;
+                    surroundedOnIndex++;
+                }
 
-                    if(watched){
-                        watchedOnPath[watchedOnIndex] = i;
-                        watchedOnIndex++;
-                    }
+                if(watched){
+                    watchedOnPath[watchedOnIndex] = i;
+                    watchedOnIndex++;
                 }
             }
         }
     }
+
     for(int i = 0; i < surroundedOnIndex; i++){
         for(int j = 0; j < watchedOnIndex; j++){
+            cout << surroundedOnPath[i] << " , " << watchedOnPath[i] << endl;
             if(surroundedOnPath[i] != watchedOnPath[j]){
                 cout << Marble::getNameFromType(this->getType()) << " captured" << endl;
                 return true;
@@ -416,11 +448,19 @@ bool Marble::isCatch(){
     return false;
 }
 
+/**
+ * @brief Marble::kill
+ * side effect of this method : call to Board::killMarble() method
+ */
 void Marble::kill(){
     Board& boardInstance = Board::Instance();
     boardInstance.killMarble(this);
 }
 
+/**
+ * @brief Marble::displayAccessibleNodes debug method, useless otherwise
+ * display the accessibleNodes
+ */
 void Marble::displayAccessibleNodes(){
     cout << nbComputedNodes << " Nodes" << endl;
     for(int i = 0; i < nbComputedNodes; i++){
