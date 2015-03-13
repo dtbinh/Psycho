@@ -28,7 +28,6 @@
 using namespace std;
 
 Marble** Util::intToMarble = new Marble*[NB_TOTAL_MARBLE];
-int Util::test = 0;
 
 int Util::split(int * destination, string chaine, char separateur)
 {

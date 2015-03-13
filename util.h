@@ -35,11 +35,11 @@ class Util
 public:
     static int split(int * destination, string chaine, char separateur);
     static bool updatePositionsTxt(Player * p1, Player * p2);
-    static Marble** intToMarble;
+
+
+    static Marble** intToMarble;                            // an array of Marbles, constant array once initialised (by setMarbleInt() method)
     static Marble* getMarbleFromInt(int index);
     static bool setMarbleInt(int index, Marble* marble);
-
-    static int test;
 };
 
 #endif // UTIL_H

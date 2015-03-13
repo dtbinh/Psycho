@@ -80,12 +80,12 @@ public:
     MyVectorOfTree* sons;
 
 private:
-    int value;
-    int level;      // Used to find if min or max for minmax algorithm
-    int nbSons;     // Used to compute arity and mean arity
+    int value;      // TODO the value computed by the evaluation algorithm,
+    int level;      // The depth of the this Tree ( root at 0)
+    int nbSons;     // The number of sons of this Tree, used to compute arity and mean arity
 
-    Move* fatherMove;
-    char marblesPosition[NB_TOTAL_MARBLE];  // Copy of the board represented by the marbles positions
+    Move* fatherMove;                       // Not used anymore
+    char marblesPosition[NB_TOTAL_MARBLE];  // Copy of the board, represented by the Marbles positions
 
     void computeLevel();
 

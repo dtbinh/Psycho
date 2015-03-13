@@ -26,9 +26,9 @@
 class Path
 {
 private :
-    int * path; // A path is a list of nodes ids
-    int nbNodes; // number of nodes
-    bool isBorder;
+    int * path;                         // A path is a list of nodes ids
+    int nbNodes;                        // number of nodes this Path contains
+    bool isBorder;                      // the border is a special case in many algorithm of this project
 
 public:
     Path();

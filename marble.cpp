@@ -471,10 +471,9 @@ void Marble::displayAccessibleNodes(){
 
 
 /**
- * Not used anymore, Kept for possible debug
- * @brief Marble::computeAccessibleNodesForPath
- * @param p
- * @param marbleId
+ * @brief Marble::computeAccessibleNodesForPath Not used anymore, Kept for possible debug
+ * @param p the Path to browse to add Nodes'id to accessibleNodes
+ * @param marbleId the index in Path p where this Marble is located
  */
 void Marble::computeAccessibleNodesForPath(Path *p, int marbleId){
     Board& boardInstance = Board::Instance();

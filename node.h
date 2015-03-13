@@ -28,13 +28,12 @@ class Path;
 class Node
 {
 private :
-    int id; // number of node
-    Marble* marble; // marble on the node, null if none
-    //Path path; // list of reachable nodes from the node
-    bool special; // true if "special" (on border)
-    bool deadMarble; // not on board, nodes for dead marbles
-    Path** paths;
-    int currentNbPaths;
+    int id;                             // id of this Node,
+    Marble* marble;                     // Marble contained in this Node, NULL if none
+    bool special;                       // true if "special" (on border)
+    bool deadMarble;                    // not on board, Nodes for dead Marbles
+    Path** paths;                       // the different Paths that contains this Node
+    int currentNbPaths;                 // number of Path that contains this Node
 
 public:
     Node();
