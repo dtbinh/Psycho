@@ -1,6 +1,9 @@
 #include "minimax.h"
 #include "tree.h"
 
+
+//Cnut et johnson minimax algorithmique
+
 Minimax::Minimax()
 {
 
