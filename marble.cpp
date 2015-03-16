@@ -40,7 +40,7 @@ Marble::Marble(int nodeId, int type)
 
 Marble::~Marble()
 {
-    delete [] computeAccessibleNodes();
+    delete [] accessibleNodes;
 }
 
 
@@ -388,9 +388,6 @@ bool Marble::isCatch(){
 
                         if(!doctorAfter && !surrounded && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
                             specialNodeBeforeDoctor++;
-                            if(this->myNode == 3){
-                                cout << "avant? : " << !doctorBefore <<",nodeId : " << currentPath->getNodeId(k) << ", nbSpecial : " << specialNodeBeforeDoctor << endl;
-                            }
                         }
 
                     }

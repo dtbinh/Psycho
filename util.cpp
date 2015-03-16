@@ -64,7 +64,6 @@ bool Util::updatePositionsTxt(Player * p1, Player * p2){
 }
 
 Marble* Util::getMarbleFromInt(int index){
-    Util::test++;
     if(index >= NB_TOTAL_MARBLE){
         return NULL;
     }else{

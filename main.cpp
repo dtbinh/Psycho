@@ -44,11 +44,10 @@ int main()
     noir->computePossibilities();
     blanc->computePossibilities();
 
-    Tree * arbreNoir = noir->fillDecisionTree(NULL, 0);
-    Tree * arbreBlanc = blanc->fillDecisionTree(NULL, 0);
+    Tree * arbreNoir = noir->fillDecisionTree(NULL, 1);
+    Tree * arbreBlanc = blanc->fillDecisionTree(NULL, 1);
 
-    arbreNoir->displayMarbles();
-    arbreBlanc->displayMarbles();
+
 
 
     // PArcourir tableau de char pour deplacer les marbles

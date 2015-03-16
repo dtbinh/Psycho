@@ -82,6 +82,8 @@ public:
 
     void pruneTree(int sonToPrune);
 
+    Marble** getMarbleDispositionWithPositions();
+
     pTree father;
     MyVectorOfTree* sons;
 
