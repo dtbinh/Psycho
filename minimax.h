@@ -9,7 +9,7 @@ public:
     ~Minimax();
 
     static int eval(char* marblePosition);
-    char *getMoveFrom(Tree* root, int depth);
+    char *getMoveFrom(Tree* root);
 };
 
 #endif // MINIMAX_H

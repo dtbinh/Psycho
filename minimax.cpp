@@ -11,7 +11,7 @@ Minimax::~Minimax()
 
 }
 
-char* Minimax::getMoveFrom(Tree* root, int depth){
+char* Minimax::getMoveFrom(Tree* root){
 
     int best = root->getMaxValue();
     return root->getDispositionFromValue(best);
