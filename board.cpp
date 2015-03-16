@@ -83,6 +83,11 @@ Board& Board::Instance(){
     return m_instance;
 }
 
+/**
+ * @brief Board::loadPaths
+ * @param file the path to the text file containing the paths of the board (paths.txt)
+ * @return true if the file is correctly loaded, false otherwise
+ */
 bool Board::loadPaths(string file){
     ifstream fichier;
     fichier.open(file.c_str(), ios::in); // opening file in read only
@@ -129,6 +134,12 @@ bool Board::loadPaths(string file){
     }
 }
 
+/**
+ * @brief Board::checkDeaths check the possible deaths caused by the last Move
+ * @param me the Player that owns the Marble that moved
+ * @param dst the Node toward which the Marble moved
+ * @return useless
+ */
 bool Board::checkDeaths(Player * me, Node * dst){
     // A) CHECK SUICIDE
     if(dst->getMarble()->isCatch()){
@@ -167,11 +178,11 @@ bool Board::checkDeaths(Player * me, Node * dst){
 
 bool Board::killMarble(Marble * marbleToKill){
     if(marbleToKill != NULL){
-        Node * marbleNode = nodes[marbleToKill->getCurrentNode()];
+        Node * marbleNode = nodes[marbleToKill->getMyNode()];
         Node * deadNode = nodes[firstFreeDeadMarble]; // get an empty dead node
         deadNode->setMarble(marbleToKill); // put the marble in it
         marbleNode->setMarble(NULL); // set the previous node marble to null
-        deadNode->getMarble()->setCurrentNode(deadNode->getId());
+        deadNode->getMarble()->setMyNode(deadNode->getId());
         cout << "killed " << marbleNode->getId() << " to " << deadNode->getId() << endl;
         firstFreeDeadMarble++ ;
         return true;
@@ -186,7 +197,7 @@ bool Board::killMarble(Marble * marbleToKill){
 void Board::forceMove(Node * src, Node * dst){
     dst->setMarble(src->getMarble());
     src->setMarble(NULL);
-    dst->getMarble()->setCurrentNode(dst->getId());
+    dst->getMarble()->setMyNode(dst->getId());
     cout << "moved " << src->getId() << " to " << dst->getId() << endl;
 }
 

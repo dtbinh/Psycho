@@ -43,12 +43,12 @@ public:
     ~Marble();
 
     void computeAccessibleNodes();
-    void setCurrentNode(int nodeId);
+    void setMyNode(int nodeId);
     void setOwner(Player*);
     void displayAccessibleNodes();
 
     int* getAccessibleNodes();
-    int getCurrentNode();
+    int getMyNode();
     Player* getOwner();
     static string getNameFromType(int t);
 
@@ -61,14 +61,14 @@ public:
     bool isDead(); // check if node > 162 (dead)
 
 private:
-    void computeAccessibleNodesForPath(Path*, int marbleId);
-    int type;
-    int* accessibleNodes; // nodes ids
-    int nbComputedNodes;
-    bool hadPsychologist;
-    bool stuck;
-    int myNode; // current node id
-    Player* owner;
+    void computeAccessibleNodesForPath(Path*, int marbleId);    // Not used anymore
+    int type;                                                   // PSYCHOPATH, INFORMER, DOCTOR or PSYCHOLOGIST
+    int* accessibleNodes;                                       // an array containning the ids of the Nodes toward which this Marble can move
+    int nbComputedNodes;                                        // the number of these Nodes
+    bool hadPsychologist;                                       // Not used anymore
+    bool stuck;                                                 // Not used anymore
+    int myNode;                                                 // the id that currently contains this Marble
+    Player* owner;                                              // the owner of this Marble
 };
 
 #endif // MARBLE_H

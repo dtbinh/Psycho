@@ -20,6 +20,12 @@
 
 #include "path.h"
 
+/**
+ * @brief Path::Path constructor of Path class
+ * @param t the array of int, the Nodes ids contained in this Path
+ * @param nbNodes the number of Node ids contained in this Path
+ * @param isBorder a boolean
+ */
 Path::Path(int * t, int nbNodes, bool isBorder){
     this->path = t;
     this->nbNodes = nbNodes;
@@ -36,14 +42,27 @@ Path::~Path()
 
 }
 
+/**
+ * @brief Path::getNbNodes getter of nbNodes attribute
+ * @return nbNodes
+ */
 int Path::getNbNodes(){
     return nbNodes;
 }
 
+/**
+ * @brief Path::getNodeId find the Node id at index i in path attribute and return it
+ * @param i the index of the Node id searched in path attribute
+ * @return the Node id at index i
+ */
 int Path::getNodeId(int i){
     return path[i];
 }
 
+/**
+ * @brief Path::isTheBorder
+ * @return true if this Path is the Border, false otherwise
+ */
 bool Path::isTheBorder(){
     return isBorder;
 }

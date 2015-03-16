@@ -22,6 +22,7 @@
 
 #include "tree.h"
 
+// the C structure that is used to implement this Vector
 typedef struct node{
     Tree* data;
     node* next;
@@ -44,7 +45,7 @@ public:
     bool addTree(Tree*, int);
 
 private:
-    node* start;
+    node* start;                // the first node of this Vector
 };
 
 #endif // MYVECTOROFTREE_H

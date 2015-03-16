@@ -24,7 +24,10 @@
 
 using namespace std;
 
-// Recursively set index of nodes
+/**
+ * @brief setIndex recursively set index of the next node, use current index
+ * @param current, the current node that is used to set the index of the next
+ */
 void setIndex(node* current){
     if(current != NULL){
         if(current->previous != NULL){
@@ -36,7 +39,10 @@ void setIndex(node* current){
     }
 }
 
-// Recursively free the linkedList nodes
+/**
+ * @brief setFree recursively free the linkedList nodes
+ * @param current the current node to free
+ */
 void setFree(node* current){
     if(current != NULL){
         node* tmp = current->next;
@@ -45,6 +51,10 @@ void setFree(node* current){
     }
 }
 
+/**
+ * @brief MyVectorOfTree::MyVectorOfTree constructor of MyVectorOfTree class
+ * set an empty node as the first node of this vector
+ */
 MyVectorOfTree::MyVectorOfTree()
 {
     node* beginning = new node;
@@ -55,6 +65,11 @@ MyVectorOfTree::MyVectorOfTree()
     this->start = beginning;
 }
 
+/**
+ * @brief MyVectorOfTree::MyVectorOfTree constructor of MyVectorOfTree class
+ * set a node containing t as the first node of this vector
+ * @param t a Tree
+ */
 MyVectorOfTree::MyVectorOfTree(Tree* t)
 {
     node* beginning = new node;
@@ -67,9 +82,13 @@ MyVectorOfTree::MyVectorOfTree(Tree* t)
 
 MyVectorOfTree::~MyVectorOfTree()
 {
-
+    setFree(this->start);
 }
 
+/**
+ * @brief MyVectorOfTree::initTree re-initialise this Vector, praticaly identical to MyVectorOfTree::MyVectorOfTree()
+ * @return true
+ */
 bool MyVectorOfTree::initTree(){
     setFree(this->start);
     node* beginning = new node;
@@ -82,7 +101,12 @@ bool MyVectorOfTree::initTree(){
     return true;
 }
 
-// add a node to the queue of the linkedList, its data is equal to the parameter
+
+/**
+ * @brief MyVectorOfTree::addTree add a node to the queue of the linkedList, its data is equal to the parameter
+ * @param p the Tree to add
+ * @return true
+ */
 bool MyVectorOfTree::addTree(Tree* p){
     if(this->start->data == NULL){
         this->start->data = p;
@@ -101,7 +125,12 @@ bool MyVectorOfTree::addTree(Tree* p){
     return true;
 }
 
-// add a node in the position i of the linkedList, its data is equal to p
+/**
+ * @brief MyVectorOfTree::addTree add a node in the position i of the linkedList, its data is equal to p
+ * @param p the Tree to add
+ * @param i the index, in the Vector where the node will be created (first node's index = 0)
+ * @return true
+ */
 bool MyVectorOfTree::addTree(Tree* p,int i){
     node* newNode = new node;
     newNode->data = p;
@@ -122,7 +151,11 @@ bool MyVectorOfTree::addTree(Tree* p,int i){
     return true;
 }
 
-// find and return the data of the node of index searched, if no nodes have this index return null
+/**
+ * @brief MyVectorOfTree::getTree find and return the data in the node of index searched
+ * @param index the index of the Tree searched
+ * @return the Tree search if found, NULL if not found
+ */
 Tree* MyVectorOfTree::getTree(int index){
     node* current = this->start;
     while(current->index != index && current->next != NULL){
@@ -135,7 +168,12 @@ Tree* MyVectorOfTree::getTree(int index){
     }
 }
 
-// Remove the node from the linkedList with data equal to the parameter, assure the integrity of the linkedList
+/**
+ * @brief MyVectorOfTree::removeTree Remove the node from the linkedList with data equal to the parameter
+ * ensure the integrity of the Vector
+ * @param p the Tree to remove
+ * @return the Tree removed from the Vector
+ */
 Tree* MyVectorOfTree::removeTree(Tree* p){
     node* current = this->start;
     pTree value;
@@ -154,6 +192,11 @@ Tree* MyVectorOfTree::removeTree(Tree* p){
     }
 }
 
+/**
+ * @brief MyVectorOfTree::removeTree remove the node at index i
+ * @param i the index of the node to remove
+ * @return the Tree contained in that node
+ */
 Tree* MyVectorOfTree::removeTree(int i){
     node* current = this->start;
     pTree value;
