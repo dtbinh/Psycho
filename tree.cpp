@@ -19,6 +19,7 @@
 */
 
 #include "tree.h"
+#include "marble.h"
 #include "myvectoroftree.h"
 #include <iostream>
 #include <cstdio>
@@ -163,6 +164,13 @@ void Tree::displayTreeNode(){
     cout << endl;
 }
 
+void Tree::displayMarbles(){
+    for(int i = 0 ; i < NBMARBLES ; i++){
+        cout << marblesPosition[i] << " ; ";
+    }
+    cout << endl;
+}
+
 /**
  * @brief Tree::displayTree only used to display the Tree
  * display this Tree's Node, calls this method on all this Trees sons
@@ -265,6 +273,20 @@ int Tree::getMaxValue(){
     }
     return value;
 }
+
+
+void Tree::setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDisposition){
+    for(int i = 0 ; i < sizeOfDisposition ; i++){
+        this->marblesPosition[i] = disposition[i]->getMyNode();
+    }
+}
+
+Marble** Tree::getMarbleDispositionWithPositions(){
+    /*for(int i = 0 ; i <  ; i++){
+
+    }*/
+}
+
 
 /**
  * @brief Tree::pruneTree prune the subTree of index sonToPrune and rearange the sons to leave no empty space in the array
