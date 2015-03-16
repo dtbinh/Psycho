@@ -1,4 +1,3 @@
-#ifndef UTIL_H
 /**
     Psychopath - Board Game
 

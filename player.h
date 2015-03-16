@@ -31,6 +31,7 @@ using namespace std;
 
 class Marble;
 class Node;
+class Tree;
 
 class Player
 {
@@ -55,7 +56,7 @@ public:
     Player * getEnnemy();
     void setEnnemy(Player * p);
 
-    void fillDecisionTree();
+    Tree * fillDecisionTree(Tree * tree, int depth);
 
     int getWhoAmI();
 

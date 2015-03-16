@@ -20,6 +20,8 @@
 
 #include "tree.h"
 #include "myvectoroftree.h"
+#include "marble.h"
+#include "node.h"
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -98,6 +100,13 @@ int Tree::getNbSons(){
 void Barre(char c, int nbChar){
     for(int i = 0; i < nbChar; i++){
         cout << c;
+    }
+}
+
+void Tree::displayMarbles(){
+    for(int i = 0 ; i < NB_TOTAL_MARBLE ; i++){
+        Marble * current = this->getMarbleFromChars(i);
+        cout << current->getOwner()->getWhoAmI() << " -> " << Marble::getNameFromType(current->getType()) << " on " << current->getCurrentNode() << endl;
     }
 }
 
@@ -180,6 +189,12 @@ void Tree::addSon(pTree son){
     son->father = this;
     son->computeLevel();
     sons->addTree(son);
+}
+
+void Tree::setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDisposition){
+    for(int i = 0 ; i < sizeOfDisposition ; i++){
+        marblesPosition[i] = (char)disposition[i]->getCurrentNode();
+    }
 }
 
 // Seek vertically the max value of all sons

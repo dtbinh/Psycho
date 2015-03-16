@@ -277,24 +277,31 @@ string Player::getStringMarblesForFile(){
         sstm << whoAmI << " " << disposition[i]->getCurrentNode() << " " << disposition[i]->getType() << endl;
     }
 
-
     return sstm.str();
 }
 
-void Player::fillDecisionTree(){
-    this->displayMarbles();
-
-    Tree* root = new Tree();
-    root->createNextSons(0);
-    Tree* son;
-    Marble* currentMarble;
-    for(int i = 0; i < this->nbMarbles; i++){
-        currentMarble = this->disposition[i];
-        for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
-            son = new Tree(root, new Move(currentMarble->getCurrentNode(), currentMarble->getAccessibleNodes()[j]));
-            root->addSon(son);
+Tree* Player::fillDecisionTree(Tree * tree, int depth){
+    if(tree == NULL){
+        tree = new Tree();
+        tree->createNextSons(0);
+        Tree* son;
+        Marble* currentMarble;
+        for(int i = 0; i < this->nbMarbles; i++){
+            currentMarble = this->disposition[i];
+            tree->setMarblePositionsWithDisposition(this->disposition, this->nbMarbles);
+            for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
+                son = new Tree(tree);
+                tree->addSon(son);
+                if(depth > 0){
+                    this->fillDecisionTree(son, depth - 1);
+                }
+            }
         }
     }
+    else{
 
-    root->displayTree();
+    }
+    return tree;
 }
+
+
