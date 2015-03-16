@@ -33,11 +33,6 @@
 
 
 // set human to true if human, false if AI
-/**
- * @brief Player::Player constructor of Player class, use a text file to load its Marble positions
- * @param player the Integer representation of the Player (cf. Player.h file)
- * @param human the boolean that indicate if the Player is human or AI
- */
 Player::Player(int player, bool human)
 {
     this->isHuman = human;
@@ -128,10 +123,6 @@ Player::~Player()
 
 }
 
-/**
- * @brief Player::play if this Player is human, will ask a move from this Player via the terminal
- * TODO the AI Player
- */
 void Player::play(){
     Board& boardInstance = Board::Instance();
     int idSrc;
@@ -158,26 +149,15 @@ void Player::play(){
     }
 }
 
-/**
- * @brief Player::getEnnemy getter of ennemy attribute
- * @return the Player, opponent of this Player of this game
- */
 Player * Player::getEnnemy(){
     return this->ennemy;
 }
 
-/**
- * @brief Player::setEnnemy setter of ennemy attribute
- * @param p the Player, opponent of this Player of this game
- */
 void Player::setEnnemy(Player * p){
     this->ennemy = p;
 }
 
-/**
- * @brief Player::hasLost Check if PSYCHOPATH is dead
- * @return true if this Player's PSYCHOPATH is dead
- */
+// Check if psychopath is dead
 bool Player::hasLost(){
     for(int i = 0 ; i < nbMarbles ; i++){
         if(disposition[i]->getType() == PSYCHOPATH){
@@ -189,12 +169,7 @@ bool Player::hasLost(){
     return false;
 }
 
-/**
- * @brief Player::move Check source Node and destination Node and do the move if possible
- * @param src the Node that contains the Marble this Player wants to move
- * @param dst the Node where this Player wants to move the Marble contained in src
- * @return false if this move is invalid : comments in code express the reasons of this invalidity
- */
+// Check source node and destination node and do the move if possible. Return false if invalid move
 bool Player::move(Node * src, Node * dst){
     Board& boardInstance = Board::Instance();
     // 0 if nodes exist
@@ -238,10 +213,6 @@ bool Player::move(Node * src, Node * dst){
     return false;
 }
 
-/**
- * @brief Player::askRespawn ask this player if he wants to respawn one of its Marbles (called when this Player kills a opponent's PSYCHOLOGIST
- * @param psychologistDeathNode the Node that contained the dead PSYCHOLOGIST
- */
 void Player::askRespawn(Node * psychologistDeathNode){
     int choice=0;
     if(this->isHuman){
@@ -260,12 +231,6 @@ void Player::askRespawn(Node * psychologistDeathNode){
 
 // Move the first dead marble wanted encountered to the old psychologist node
 // return false if can't
-/**
- * @brief Player::respawnUnit move the first dead marble wanted encountered to the old PSYCHOLOGIST's Node
- * @param psychologistDeathNode the Node that contained the dead PSYCHOLOGIST
- * @param marbleWanted an integer that represent the type of Marble wanted (cf. Marble.h file)
- * @return false if no Marble of this Type is available
- */
 bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
     Board& boardInstance = Board::Instance();
     // Seek for the marble wanted
@@ -283,69 +248,60 @@ bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
     return false;
 }
 
-/**
- * @brief Player::computePossibilities compute all the possible action this Player can take according to this game's rules
- * side effect of this method : call each of this Player's Marble's computeAccessibleNodes() method
- */
 void Player::computePossibilities(){
     for(int i = 0 ; i < nbMarbles ; i++){
         disposition[i]->computeAccessibleNodes();
     }
 }
 
-/**
- * @brief Player::displayMarbles for debug purpose only
- * side effect of this method : display this Player's Marbles,
- */
 void Player::displayMarbles(){
    string name;
    for(int i = 0; i < NBMARBLES; i++){
        name = Marble::getNameFromType(disposition[i]->getType());
-       cout << "(" << name << ") " << disposition[i]->getMyNode() << endl;
+       cout << "(" << name << ") " << disposition[i]->getCurrentNode() << endl;
        disposition[i]->displayAccessibleNodes();
    }
 }
 
-/**
- * @brief Player::getWhoAmI
- * @return the integer that represent this Player status : 1 if PLAYERONE, 2 if PLAYERTWO
- */
 int Player::getWhoAmI(){
     return whoAmI;
 }
 
 // affiche au format des fichiers txt de marbles
-/**
- * @brief Player::getStringMarblesForFile create a string to the format of text files containing the Marbles information
- * @return the string representation of this Player's Marble
- */
 string Player::getStringMarblesForFile(){
     stringstream sstm;
     // 1) nbMarbles
     sstm << nbMarbles << endl;
     // 2) Write player / NodeID / MarbleType
     for(int i = 0 ; i < nbMarbles ; i++){
-        sstm << whoAmI << " " << disposition[i]->getMyNode() << " " << disposition[i]->getType() << endl;
+        sstm << whoAmI << " " << disposition[i]->getCurrentNode() << " " << disposition[i]->getType() << endl;
     }
-
 
     return sstm.str();
 }
 
-void Player::fillDecisionTree(){
-    this->displayMarbles();
-
-    Tree* root = new Tree();
-    root->createNextSons(0);
-    Tree* son;
-    Marble* currentMarble;
-    for(int i = 0; i < this->nbMarbles; i++){
-        currentMarble = this->disposition[i];
-        for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
-            son = new Tree(root, new Move(currentMarble->getMyNode(), currentMarble->getAccessibleNodes()[j]));
-            root->addSon(son);
+Tree* Player::fillDecisionTree(Tree * tree, int depth){
+    if(tree == NULL){
+        tree = new Tree();
+        tree->createNextSons(0);
+        Tree* son;
+        Marble* currentMarble;
+        for(int i = 0; i < this->nbMarbles; i++){
+            currentMarble = this->disposition[i];
+            tree->setMarblePositionsWithDisposition(this->disposition, this->nbMarbles);
+            for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
+                son = new Tree(tree);
+                tree->addSon(son);
+                if(depth > 0){
+                    this->fillDecisionTree(son, depth - 1);
+                }
+            }
         }
     }
+    else{
 
-    root->displayTree();
+    }
+    return tree;
 }
+
+

@@ -23,6 +23,8 @@
 #include "board.h"
 #include "player.h"
 #include "path.h"
+#include "tree.h"
+#include "myvectoroftree.h"
 #include <cstdlib>
 
 using namespace std;
@@ -42,8 +44,15 @@ int main()
     noir->computePossibilities();
     blanc->computePossibilities();
 
-    noir->fillDecisionTree();
-    blanc->fillDecisionTree();
+    Tree * arbreNoir = noir->fillDecisionTree(NULL, 0);
+    Tree * arbreBlanc = blanc->fillDecisionTree(NULL, 0);
+
+    arbreNoir->displayMarbles();
+    arbreBlanc->displayMarbles();
+
+
+    // PArcourir tableau de char pour deplacer les marbles
+    // getmarblefromint(i).setnodeid(char(i))
 
    Util::updatePositionsTxt(blanc, noir);
     system("pause");

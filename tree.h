@@ -65,6 +65,7 @@ public:
 
     void displayTree();
     void displayTreeNode();
+    void displayMarbles();
 
     void createNextSons(int _nbSons);
     void addSon(pTree son);
@@ -73,6 +74,8 @@ public:
     void deleteAllSons();
 
     int getMaxValue();
+
+    void setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDisposition);
 
     void pruneTree(int sonToPrune);
 
@@ -86,6 +89,9 @@ private:
 
     Move* fatherMove;                       // Not used anymore
     char marblesPosition[NB_TOTAL_MARBLE];  // Copy of the board, represented by the Marbles positions
+
+    // each char is the id of the node containing the marble
+
 
     void computeLevel();
 
