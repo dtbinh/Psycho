@@ -80,7 +80,7 @@ int main()
 
     Util::updatePositionsTxt(blanc, noir);
 
-    blanc->fillDecisionTree();
+    //blanc->fillDecisionTree();
 
     return 0;
 }
