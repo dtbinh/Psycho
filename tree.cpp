@@ -1,7 +1,8 @@
 /**
     Psychopath - Board Game
 
-    Copyright (C) <2015>  <Olivier Perriquet>
+    Copyleft  (C) <2008>  <Olivier Perriquet> (Game conception)
+    Copyright (C) <2015>  <Robache Alexis, Sévin Léo-Paul> (AI conception and implementation>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -295,18 +296,27 @@ int Tree::getMinValue(){
 }
 
 
-void Tree::setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDisposition){
-    for(int i = 0 ; i < sizeOfDisposition ; i++){
-        this->marblesPosition[i] = disposition[i]->getMyNode();
+void Tree::setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble** dispositionPlayerTwo){
+    for(int i = 0 ; i < NBMARBLES ; i++){
+        this->marblesPosition[i] = dispositionPlayerOne[i]->getMyNode();
+    }
+    for(int i = NBMARBLES; i < NB_TOTAL_MARBLE; i++){
+        this->marblesPosition[i] = dispositionPlayerTwo[i]->getMyNode();
     }
 }
 
-Marble** Tree::getMarbleDispositionWithPositions(){
-    /*for(int i = 0 ; i <  ; i++){
-
-    }*/
+Marble** Tree::getDispositionFromMarblePosition(){
+    Marble** disposition = new Marble*[NB_TOTAL_MARBLE];
+    for(int i = 0 ; i < NB_TOTAL_MARBLE; i++){
+        disposition[i] = Util::getMarbleFromInt(i);
+        disposition[i]->setMyNode(this->marblesPosition[i]);
+    }
+    return disposition;
 }
 
+char* Tree::getMarbleDisposition(){
+    return this->marblesPosition;
+}
 
 /**
  * @brief Tree::pruneTree prune the subTree of index sonToPrune and rearange the sons to leave no empty space in the array

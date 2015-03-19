@@ -1,7 +1,8 @@
 /**
     Psychopath - Board Game
 
-    Copyright (C) <2015>  <Olivier Perriquet>
+    Copyleft  (C) <2008>  <Olivier Perriquet> (Game conception)
+    Copyright (C) <2015>  <Robache Alexis, Sévin Léo-Paul> (AI conception and implementation>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -75,14 +76,14 @@ public:
     void deleteAllSons();
 
     int getMaxValue();
-
     int getMinValue();
 
-    void setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDisposition);
+    void setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble **dispositionPlayerTwo);
 
+    char* getMarbleDisposition();
     void pruneTree(int sonToPrune);
 
-    Marble** getMarbleDispositionWithPositions();
+    Marble** getDispositionFromMarblePosition();
 
     pTree father;
     MyVectorOfTree* sons;

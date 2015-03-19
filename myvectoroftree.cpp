@@ -1,7 +1,8 @@
 /**
     Psychopath - Board Game
 
-    Copyright (C) <2015>  <Olivier Perriquet>
+    Copyleft  (C) <2008>  <Olivier Perriquet> (Game conception)
+    Copyright (C) <2015>  <Robache Alexis, Sévin Léo-Paul> (AI conception and implementation>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,10 +35,10 @@ void setIndex(node* current){
     if(current != NULL){
         if(current->previous != NULL){
             current->index = current->previous->index + 1;
-            setIndex(current->next);
         }else{
             current->index = 0;
         }
+        setIndex(current->next);
     }
 }
 
@@ -185,9 +186,14 @@ Tree* MyVectorOfTree::removeTree(Tree* p){
     if(current->data != p){
         return NULL;
     }else{
-        current->previous->next = current->next;
-        current->next->previous = current->previous;
-        setIndex(current->next);
+        if(current->previous == NULL){
+            this->start = current->next;
+            setIndex(this->start);
+        }else{
+            current->previous->next = current->next;
+            current->next->previous = current->previous;
+            setIndex(current->next);
+        }
         value = current->data;
         free(current);
         return value;
@@ -208,13 +214,28 @@ Tree* MyVectorOfTree::removeTree(int i){
     if(current->index != i){
         return NULL;
     }else{
-        current->previous->next = current->next;
-        current->next->previous = current->previous;
-        setIndex(current->next);
+        if(current->previous == NULL){
+            this->start = current->next;
+            setIndex(this->start);
+        }else{
+            current->previous->next = current->next;
+            current->next->previous = current->previous;
+            setIndex(current->next);
+        }
         value = current->data;
         free(current);
         return value;
     }
 }
 
+int MyVectorOfTree::size(){
+    node* current = this->start;
+    while(current->next != NULL){
+        current = current->next;
+    }
+    return current->index + 1;
+}
 
+bool MyVectorOfTree::isEmpty(){
+    return this->start == NULL;
+}
