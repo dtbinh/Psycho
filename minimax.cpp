@@ -46,8 +46,6 @@ Tree* Minimax::fillDecisionTree(Tree * tree, int depth){
 
 
         // create his son with new disposition
-
-
     }
     return tree;
 }
