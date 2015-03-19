@@ -1,7 +1,8 @@
 /**
     Psychopath - Board Game
 
-    Copyright (C) <2015>  <Olivier Perriquet>
+    Copyleft  (C) <2008>  <Olivier Perriquet> (Game conception)
+    Copyright (C) <2015>  <Robache Alexis, Sévin Léo-Paul> (AI conception and implementation>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+
 #ifndef MYVECTOROFTREE_H
 #define MYVECTOROFTREE_H
 
@@ -43,6 +45,10 @@ public:
     Tree* removeTree(int);
     bool addTree(Tree*);
     bool addTree(Tree*, int);
+
+    bool isEmpty();
+
+    int size();
 
 private:
     node* start;                // the first node of this Vector

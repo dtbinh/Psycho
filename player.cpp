@@ -1,7 +1,8 @@
 /**
     Psychopath - Board Game
 
-    Copyright (C) <2015>  <Olivier Perriquet>
+    Copyleft  (C) <2008>  <Olivier Perriquet> (Game conception)
+    Copyright (C) <2015>  <Robache Alexis, Sévin Léo-Paul> (AI conception and implementation>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -280,4 +281,7 @@ string Player::getStringMarblesForFile(){
     return sstm.str();
 }
 
+Marble** Player::getDisposition(){
+    return this->disposition;
+}
 
