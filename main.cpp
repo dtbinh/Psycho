@@ -25,6 +25,7 @@
 #include "player.h"
 #include "path.h"
 #include "tree.h"
+#include "minimax.h"
 #include "myvectoroftree.h"
 #include "minimax.h";
 #include <cstdlib>
@@ -50,9 +51,6 @@ int main()
     Minimax mini = new Minimax();
     MyVectorOfTree* tmp = mini.initParcours(blanc);
     mini.bestTree(blanc, tmp, time(0));
-
-
-
 
 
 
