@@ -265,9 +265,7 @@ void Tree::addSon(pTree son){
  * @return an integer, value of this Tree
  */
 int Tree::getMaxValue(){
-    if( nbSons <= 0){
-        this->value = Minimax::eval(this->marblesPosition);
-    }
+
     int sonValue = -1;
     for(int i = 0; i < nbSons; i++){
         sonValue = sons->getTree(i)->getMinValue();
@@ -284,10 +282,8 @@ int Tree::getMaxValue(){
  * @return an integer, value of this Tree
  */
 int Tree::getMinValue(){
-    if( nbSons <= 0){
-        this->value = Minimax::eval(this->marblesPosition);
-    }
-    int sonValue = 100000000000000;
+
+    int sonValue = INT_MAX;
     for(int i = 0; i < nbSons; i++){
         sonValue = sons->getTree(i)->getMaxValue();
 

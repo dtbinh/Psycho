@@ -44,8 +44,7 @@ int main()
     noir->computePossibilities();
     blanc->computePossibilities();
 
-    Tree * arbreNoir = noir->fillDecisionTree(NULL, 1);
-    Tree * arbreBlanc = blanc->fillDecisionTree(NULL, 1);
+
 
 
 

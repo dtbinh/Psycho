@@ -18,17 +18,31 @@ Minimax::~Minimax()
 
 }
 
-char* Minimax::getMoveFrom(Tree* root){
 
-    int best = root->getMaxValue();
-    return root->getDispositionFromValue(best);
+int Minimax::eval(char *marblePosition, Player* player){
+    Marble* marble;
+    int value = 0;
+    for(int i = 0; i < NB_TOTAL_MARBLE; i++){
+        marblePosition[i] > 162;
+        marble = Util::getMarbleFromInt(i);
+        if(player == marble->getOwner()){
+            if(i < 13){
+                value--;
+            }else{
+                value++;
+            }
+        }else{
+            if(i >= 13){
+                value--;
+            }else{
+                value++;
+            }
+        }
+    }
+    return value;
 }
 
-int Minimax::eval(char *marblePosition){
-    //TODO real evaluation function
-    int* rdm;
-    return (int) rdm;
-}
+/*
 Tree* Minimax::fillDecisionTree(Tree * tree, int depth){
     Board& boardInstance = Board::Instance();
     // If first call, initialize the tree
@@ -65,3 +79,5 @@ Tree* Minimax::fillDecisionTree(Tree * tree, int depth){
     }
     return tree;
 }
+
+*/
