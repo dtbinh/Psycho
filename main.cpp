@@ -44,8 +44,7 @@ int main()
     noir->computePossibilities();
     blanc->computePossibilities();
 
-    Tree * arbreNoir = noir->fillDecisionTree(NULL, 1);
-    Tree * arbreBlanc = blanc->fillDecisionTree(NULL, 1);
+
 
 
 
@@ -53,7 +52,7 @@ int main()
     // PArcourir tableau de char pour deplacer les marbles
     // getmarblefromint(i).setnodeid(char(i))
 
-   /* Util::updatePositionsTxt(blanc, noir);
+   Util::updatePositionsTxt(blanc, noir);
     system("pause");
     // boucle de jeu
     while(!blanc->hasLost() && !noir->hasLost()){
@@ -79,7 +78,7 @@ int main()
 
     Util::updatePositionsTxt(blanc, noir);
 
-    blanc->fillDecisionTree();*/
+    //blanc->fillDecisionTree();
 
     return 0;
 }

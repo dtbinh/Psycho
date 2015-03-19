@@ -33,6 +33,7 @@ public:
     Move* getConsequence();
     void setConsequence();
 
+    char* getDispositionFromValue(int value);
     Move* transposeMove();
 private:
     int fromNode;           // index of the node from which the Marble moved
@@ -74,6 +75,8 @@ public:
     void deleteAllSons();
 
     int getMaxValue();
+
+    int getMinValue();
 
     void setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDisposition);
 

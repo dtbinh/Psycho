@@ -19,6 +19,7 @@
 */
 
 #include "tree.h"
+#include "minimax.h"
 #include "marble.h"
 #include "myvectoroftree.h"
 #include <iostream>
@@ -259,19 +260,38 @@ void Tree::addSon(pTree son){
 
 // Seek vertically the max value of all sons
 /**
- * @brief Tree::getMaxValue search the tree for the maximum value of the sons
- * @return an integer, the maximum value of the sons of this Tree
+ * @brief Tree::getMaxValue search the Tree for the maximum value of the sons
+ * set the value of this Tree to the maximum value of this Tree's sons
+ * @return an integer, value of this Tree
  */
 int Tree::getMaxValue(){
-    int sonValue;
-    for(int i = 0 ; i < nbSons ; i++){
-        sonValue = sons->getTree(i)->getMaxValue();
-        // seek max
+
+    int sonValue = -1;
+    for(int i = 0; i < nbSons; i++){
+        sonValue = sons->getTree(i)->getMinValue();
         if(value < sonValue){
             value = sonValue;
         }
     }
-    return value;
+    return this->value;
+}
+
+/**
+ * @brief Tree::getMinValue search the Tree for the minimum vaue of the snons
+ * set the value of this Tree to the minimum value of this Tree's sons
+ * @return an integer, value of this Tree
+ */
+int Tree::getMinValue(){
+
+    int sonValue = INT_MAX;
+    for(int i = 0; i < nbSons; i++){
+        sonValue = sons->getTree(i)->getMaxValue();
+
+        if(value > sonValue){
+            value = sonValue;
+        }
+    }
+    return this->value;
 }
 
 

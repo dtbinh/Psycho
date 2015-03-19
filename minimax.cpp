@@ -5,6 +5,9 @@
 #include "player.h"
 
 
+//Cnut et johnson minimax algorithmique
+
+
 Minimax::Minimax()
 {
 
@@ -15,6 +18,31 @@ Minimax::~Minimax()
 
 }
 
+
+int Minimax::eval(char *marblePosition, Player* player){
+    Marble* marble;
+    int value = 0;
+    for(int i = 0; i < NB_TOTAL_MARBLE; i++){
+        marblePosition[i] > 162;
+        marble = Util::getMarbleFromInt(i);
+        if(player == marble->getOwner()){
+            if(i < 13){
+                value--;
+            }else{
+                value++;
+            }
+        }else{
+            if(i >= 13){
+                value--;
+            }else{
+                value++;
+            }
+        }
+    }
+    return value;
+}
+
+/*
 Tree* Minimax::fillDecisionTree(Tree * tree, int depth){
     Board& boardInstance = Board::Instance();
     // If first call, initialize the tree
@@ -49,3 +77,5 @@ Tree* Minimax::fillDecisionTree(Tree * tree, int depth){
     }
     return tree;
 }
+
+*/
