@@ -42,7 +42,7 @@ Minimax::~Minimax()
 }
 
 
-int Minimax::eval(char *marblePosition, Player* player){
+int Minimax::eval(int *marblePosition, Player* player){
     Marble* marble;
     int value = 0;
     for(int i = 0; i < NB_TOTAL_MARBLE; i++){
@@ -61,44 +61,6 @@ int Minimax::eval(char *marblePosition, Player* player){
 void Minimax::treeStatus(int level, int value, int maxValue, int bestTreeIndex){
     cout << "\rLevel : " << level << " | Value : " << value << " / " << maxValue << " | Best : " << bestTreeIndex;
 }
-
-/*
-Tree* Minimax::fillDecisionTree(Tree * tree, int depth){
-    Board& boardInstance = Board::Instance();
-    // If first call, initialize the tree
-    if(tree == NULL){
-        tree = new Tree();
-        tree->createNextSons(0);
-        Tree* son;
-        Marble* currentMarble;
-        for(int i = 0; i < this->nbMarbles; i++){
-            tree->setMarblePositionsWithDisposition(this->disposition, this->nbMarbles);
-
-            currentMarble = this->disposition[i];
-            for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
-                son = new Tree(tree);
-                // do the move
-                currentMarble->getOwner()->move(boardInstance.getNode(currentMarble->getMyNode()),boardInstance.getNode(currentMarble->getAccessibleNodes()[j]));
-                // get the new disposition and add it to the son
-                son->setMarblePositionsWithDisposition(this->disposition, this->nbMarbles);
-                tree->addSon(son);
-                if(depth > 0){
-                    this->fillDecisionTree(son, depth - 1);
-                }
-            }
-        }
-    }
-    else{
-        // For each son
-        // get the disposition of father
-
-
-        // create his son with new disposition
-    }
-    return tree;
-}
-
-*/
 
 MyVectorOfTree* Minimax::initParcours(Player* player){
     MyVectorOfTree* list = new MyVectorOfTree();
@@ -120,16 +82,18 @@ MyVectorOfTree* Minimax::initParcours(Player* player){
 Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
     Board& boardInstance = Board::Instance();
     int* accessibleNodes;
-    int sonValue;
     Tree* sonTree;
 
     Marble* currentMarble;
     Marble** allMarbles;
     Marble** playerMarbles;
     Tree* currentTree;
+    int treeCpt = 0;
+    int treeSize = 0;
 
     while(!list->isEmpty() && timeout+60 > time(0)){
-        currentTree = list->removeTree(0);
+        currentTree = list->getTree(treeCpt);
+
 
         allMarbles = currentTree->getDispositionFromMarblePosition();
         for(int i = 0; i < NB_TOTAL_MARBLE; i++){
@@ -149,7 +113,12 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
             currentMarble = playerMarbles[i];
             accessibleNodes = currentMarble->getAccessibleNodes();
             for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
-                player->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
+                cout << "Taille de l'arbre : " << treeSize++ << endl;
+                if(currentTree->getLevel() %2 == 0){
+                    player->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
+                }else{
+                    player->getEnnemy()->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
+                }
                 sonTree = new Tree(currentTree);
                 sonTree->setLevel(currentTree->getLevel()+1);
                 if(player->getWhoAmI() == PLAYERONE){
@@ -157,9 +126,9 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }else{
                     sonTree->setMarblePositionsWithDisposition(player->getEnnemy()->getDisposition(), player->getDisposition());
                 }
-                sonValue = this->eval(sonTree->getMarbleDisposition(), player);
-                if(sonValue > this->bestValue){
-                    this->bestValue = sonValue;
+                sonTree->setValue(this->eval(sonTree->getMarbleDisposition(), player));
+                if(sonTree->getValue() > this->bestValue){
+                    this->bestValue = sonTree->getValue();
                     this->bestSon = sonTree;
                 }
                 list->addTree(sonTree);
@@ -171,17 +140,26 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }
 
                 allMarbles = currentTree->getDispositionFromMarblePosition();
+                for(int i = 0; i < boardInstance.size(); i++){
+                    boardInstance.getNode(i)->setMarble(NULL);
+                }
                 for(int i = 0; i < NB_TOTAL_MARBLE; i++){
                     boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
                 }
+                /* possiblement inutile
                 if((currentTree->getLevel()) %2 == 0){
                     player->computePossibilities();
                 }else{
                     player->getEnnemy()->computePossibilities();
                 }
+                */
 
+                system("pause");
+
+                this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
             }
         }
+        treeCpt++;
     }
 
     return this->bestSon;

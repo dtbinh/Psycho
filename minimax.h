@@ -35,7 +35,7 @@ public:
     Minimax();
     ~Minimax();
 
-    int eval(char* marblePosition, Player* player);
+    int eval(int *marblePosition, Player* player);
     char *getMoveFrom(Tree* root);
 
     Tree* fillDecisionTree(Tree*, int);

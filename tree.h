@@ -57,13 +57,15 @@ public:
     ~Tree();
     Tree(pTree father);
     Tree(pTree father, Move* fatherMove);
-    Tree(pTree father, char* marblesPosition);
+    Tree(pTree father, int* marblesPosition);
 
     void setLevel(int _level);
     void setNbSons(int _nbSons);
+    void setValue(int value);
 
     int getLevel();
     int getNbSons();
+    int getValue();
 
     void displayTree();
     void displayTreeNode();
@@ -80,7 +82,7 @@ public:
 
     void setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble **dispositionPlayerTwo);
 
-    char* getMarbleDisposition();
+    int *getMarbleDisposition();
     void pruneTree(int sonToPrune);
 
     Marble** getDispositionFromMarblePosition();
@@ -94,7 +96,7 @@ private:
     int nbSons;     // The number of sons of this Tree, used to compute arity and mean arity
 
     Move* fatherMove;                       // Not used anymore
-    char marblesPosition[NB_TOTAL_MARBLE];  // Copy of the board, represented by the Marbles positions
+    int* marblesPosition;  // Copy of the board, represented by the Marbles positions
 
     // each char is the id of the node containing the marble
 

@@ -111,7 +111,7 @@ Marble* Node::getMarble(){
  * @param _marble a Marble
  */
 void Node::setMarble(Marble* _marble){
-    marble = _marble;
+    this->marble = _marble;
 }
 
 

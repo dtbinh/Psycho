@@ -46,6 +46,7 @@ Tree::Tree()
     fatherMove = NULL;
     sons = NULL;
     value = -1;
+    marblesPosition = new int[NB_TOTAL_MARBLE];
 }
 
 /**
@@ -59,6 +60,7 @@ Tree::Tree(pTree father){
     fatherMove = NULL;
     sons = NULL;
     value = -1;
+    marblesPosition = new int[NB_TOTAL_MARBLE];
 }
 
 /**
@@ -73,6 +75,7 @@ Tree::Tree(pTree father, Move *fatherMove){
     this->fatherMove = fatherMove;
     sons = NULL;
     value = -1;
+    marblesPosition = new int[NB_TOTAL_MARBLE];
 }
 
 Tree::~Tree()
@@ -128,6 +131,14 @@ void Tree::setNbSons(int _nbSons){
  */
 int Tree::getNbSons(){
     return nbSons;
+}
+
+void Tree::setValue(int value){
+    this->value = value;
+}
+
+int Tree::getValue(){
+    return this->value;
 }
 
 /**
@@ -300,21 +311,23 @@ void Tree::setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Mar
     for(int i = 0 ; i < NBMARBLES ; i++){
         this->marblesPosition[i] = dispositionPlayerOne[i]->getMyNode();
     }
-    for(int i = NBMARBLES; i < NB_TOTAL_MARBLE; i++){
-        this->marblesPosition[i] = dispositionPlayerTwo[i]->getMyNode();
+    for(int i = 0; i < NBMARBLES; i++){
+        this->marblesPosition[i+NBMARBLES] = dispositionPlayerTwo[i]->getMyNode();
     }
 }
+
 
 Marble** Tree::getDispositionFromMarblePosition(){
-    Marble** disposition = new Marble*[NB_TOTAL_MARBLE];
+
+    Marble** allMarbles = new Marble*[NB_TOTAL_MARBLE];
     for(int i = 0 ; i < NB_TOTAL_MARBLE; i++){
-        disposition[i] = Util::getMarbleFromInt(i);
-        disposition[i]->setMyNode(this->marblesPosition[i]);
+        allMarbles[i] = Util::getMarbleFromInt(i);
+        allMarbles[i]->setMyNode(this->marblesPosition[i]);
     }
-    return disposition;
+    return allMarbles;
 }
 
-char* Tree::getMarbleDisposition(){
+int* Tree::getMarbleDisposition(){
     return this->marblesPosition;
 }
 

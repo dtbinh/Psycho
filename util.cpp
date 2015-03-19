@@ -72,7 +72,7 @@ Marble* Util::getMarbleFromInt(int index){
     }
 }
 
-bool Util::setMarbleInt(int index, Marble *marble){
+bool Util::setMarbleInt(int index, Marble* marble){
     if(index >= NB_TOTAL_MARBLE){
         return false;
     }else{

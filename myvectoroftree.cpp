@@ -214,17 +214,35 @@ Tree* MyVectorOfTree::removeTree(int i){
     if(current->index != i){
         return NULL;
     }else{
-        if(current->previous == NULL){
-            this->start = current->next;
+        if(current == this->start){
+            if(this->start->next == NULL){
+                value = this->start->data;
+                this->start->data = NULL;
+            }else{
+                this->start = current->next;
+                value = current->data;
+            }
             setIndex(this->start);
         }else{
             current->previous->next = current->next;
             current->next->previous = current->previous;
             setIndex(current->next);
+            value = current->data;
         }
-        value = current->data;
-        free(current);
+        current = NULL;
         return value;
+    }
+}
+
+int MyVectorOfTree::getIndexFromValue(Tree* p){
+    node* current = this->start;
+    while(current->data != p && current->next != NULL){
+        current = current->next;
+    }
+    if(current->data != p){
+        return -1;
+    }else{
+        return current->index;
     }
 }
 
@@ -237,5 +255,5 @@ int MyVectorOfTree::size(){
 }
 
 bool MyVectorOfTree::isEmpty(){
-    return this->start == NULL;
+    return this->start->data == NULL;
 }

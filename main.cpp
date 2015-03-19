@@ -48,9 +48,11 @@ int main()
     noir->computePossibilities();
     blanc->computePossibilities();
 
-    Minimax mini = new Minimax();
-    MyVectorOfTree* tmp = mini.initParcours(blanc);
-    mini.bestTree(blanc, tmp, time(0));
+
+
+    Minimax* mini = new Minimax();
+    MyVectorOfTree* tmp = mini->initParcours(blanc);
+    mini->bestTree(blanc, tmp, time(0));
 
 
 

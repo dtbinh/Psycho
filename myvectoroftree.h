@@ -46,6 +46,8 @@ public:
     bool addTree(Tree*);
     bool addTree(Tree*, int);
 
+    int getIndexFromValue(Tree*);
+
     bool isEmpty();
 
     int size();

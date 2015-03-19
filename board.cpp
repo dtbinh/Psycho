@@ -199,7 +199,7 @@ void Board::forceMove(Node * src, Node * dst){
     dst->setMarble(src->getMarble());
     src->setMarble(NULL);
     dst->getMarble()->setMyNode(dst->getId());
-    cout << "moved " << src->getId() << " to " << dst->getId() << endl;
+   // cout << "moved " << src->getId() << " to " << dst->getId() << endl;
 }
 
 
