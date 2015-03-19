@@ -161,6 +161,12 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }
                 list->addTree(sonTree);
 
+                if(player->getWhoAmI() == PLAYERONE){
+                    Util::updatePositionsTxt(player, player->getEnnemy());
+                }else{
+                    Util::updatePositionsTxt(player->getEnnemy(), player);
+                }
+
                 allMarbles = currentTree->getDispositionFromMarblePosition();
                 for(int i = 0; i < NB_TOTAL_MARBLE; i++){
                     boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
@@ -170,6 +176,7 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }else{
                     player->getEnnemy()->computePossibilities();
                 }
+
             }
         }
     }
