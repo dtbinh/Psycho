@@ -25,6 +25,7 @@
 #include "player.h"
 #include "path.h"
 #include "tree.h"
+#include "minimax.h"
 #include "myvectoroftree.h"
 #include <cstdlib>
 #include <ctime>
@@ -45,9 +46,6 @@ int main()
 
     noir->computePossibilities();
     blanc->computePossibilities();
-
-
-
 
 
 

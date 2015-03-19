@@ -29,6 +29,7 @@
 
 //Cnut et johnson minimax algorithmique
 
+using namespace std;
 
 Minimax::Minimax()
 {
@@ -55,6 +56,10 @@ int Minimax::eval(char *marblePosition, Player* player){
         }
     }
     return value;
+}
+
+void Minimax::treeStatus(int level, int value, int maxValue, int bestTreeIndex){
+    cout << "\rLevel : " << level << " | Value : " << value << " / " << maxValue << " | Best : " << bestTreeIndex;
 }
 
 /*
