@@ -301,12 +301,6 @@ void Tree::setMarblePositionsWithDisposition(Marble ** disposition, int sizeOfDi
     }
 }
 
-Marble** Tree::getMarbleDispositionWithPositions(){
-    /*for(int i = 0 ; i <  ; i++){
-
-    }*/
-}
-
 
 /**
  * @brief Tree::pruneTree prune the subTree of index sonToPrune and rearange the sons to leave no empty space in the array
