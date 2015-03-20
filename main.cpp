@@ -27,7 +27,7 @@
 #include "tree.h"
 #include "minimax.h"
 #include "myvectoroftree.h"
-#include "minimax.h";
+#include "minimax.h"
 #include <cstdlib>
 #include <ctime>
 

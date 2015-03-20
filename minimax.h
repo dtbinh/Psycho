@@ -22,7 +22,7 @@
 #ifndef MINIMAX_H
 #define MINIMAX_H
 
-#include<ctime>
+#include <ctime>
 #include <iostream>
 
 class Player;
