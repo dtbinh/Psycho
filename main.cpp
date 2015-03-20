@@ -20,16 +20,18 @@
 */
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
+
 #include "util.h"
 #include "board.h"
 #include "player.h"
 #include "path.h"
 #include "tree.h"
 #include "minimax.h"
+#include "node.h"
+#include "marble.h"
 #include "myvectoroftree.h"
-#include "minimax.h"
-#include <cstdlib>
-#include <ctime>
 
 using namespace std;
 
@@ -60,7 +62,10 @@ int main()
     // getmarblefromint(i).setnodeid(char(i))
 
    Util::updatePositionsTxt(blanc, noir);
-    system("pause");
+    
+    //system("pause");
+    cin.get();
+    
     // boucle de jeu
     while(!blanc->hasLost() && !noir->hasLost()){
         blanc->play();

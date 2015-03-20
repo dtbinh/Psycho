@@ -27,10 +27,17 @@
 
 class Player;
 class MyVectorOfTree;
-
 class Tree;
+
+using namespace std;
+
 class Minimax
 {
+
+private:
+    int bestValue;
+    Tree* bestSon;
+
 public:
     Minimax();
     ~Minimax();
@@ -42,10 +49,6 @@ public:
     void treeStatus(int level, int value, int maxValue, int bestTreeIndex);
     Tree* bestTree(Player *player, MyVectorOfTree* list, time_t timeout);
     MyVectorOfTree* initParcours(Player *player);
-
-private:
-    int bestValue;
-    Tree* bestSon;
 
 };
 

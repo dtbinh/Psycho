@@ -4,10 +4,10 @@ LIBS = -lm -lpthread -ldl
 
 all : main
 
-main : main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o
-	$(CC) -o psycho main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o $(LIBS)
+main : main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o minimax.o
+	$(CC) -o psycho main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o minimax.o $(LIBS)
 
-main.o : main.cpp board.h player.h path.h tree.h minimax.h myvectoroftree.h minimax.h
+main.o : main.cpp board.h player.h path.h tree.h minimax.h myvectoroftree.h minimax.h node.h marble.h
 	$(CC) -c -o $@ $< $(CFLAGS) 
 
 board.o : board.cpp board.h path.h node.h marble.h util.h
@@ -34,6 +34,8 @@ myvectoroftree.o : myvectoroftree.cpp myvectoroftree.h tree.h
 tree.o : tree.cpp tree.h myvectoroftree.h minimax.h marble.h util.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
+minimax.o : minimax.cpp tree.h myvectoroftree.h minimax.h marble.h board.h player.h
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean :
 	rm -rf *.o
