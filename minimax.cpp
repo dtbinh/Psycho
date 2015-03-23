@@ -27,10 +27,6 @@
 #include "myvectoroftree.h"
 
 
-//Cnut et johnson minimax algorithmique
-
-using namespace std;
-
 Minimax::Minimax()
 {
 
@@ -152,6 +148,7 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }
 
                 cin.get();
+			    cin.get();
 
                 this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
             }
