@@ -34,6 +34,8 @@ using namespace std;
 
 #define NB_CROSSING_PATHS 3
 
+#define DEADLIMIT 162
+
 class Path;
 
 class Marble
@@ -55,7 +57,7 @@ public:
 
     void kill();    
 
-    bool isCatch();
+    bool isCaught();
 
     int getType();
     int getNbComputedNodes();

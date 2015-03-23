@@ -46,7 +46,7 @@ int Minimax::eval(int *marblePosition, Player* player){
     Marble* marble;
     int value = 0;
     for(int i = 0; i < NB_TOTAL_MARBLE; i++){
-        if(marblePosition[i] > 162){
+        if(marblePosition[i] > DEADLIMIT){
             marble = Util::getMarbleFromInt(i);
             if(player == marble->getOwner()){
                 value -= 1;
@@ -79,6 +79,7 @@ MyVectorOfTree* Minimax::initParcours(Player* player){
     return list;
 }
 
+// Changer list en Tree
 Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
     Board& boardInstance = Board::Instance();
     int* accessibleNodes;
@@ -132,6 +133,7 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                     this->bestSon = sonTree;
                 }
                 list->addTree(sonTree);
+                currentTree->addSon(sonTree);
 
                 if(player->getWhoAmI() == PLAYERONE){
                     Util::updatePositionsTxt(player, player->getEnnemy());
@@ -140,21 +142,16 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }
 
                 allMarbles = currentTree->getDispositionFromMarblePosition();
+                // reset board
                 for(int i = 0; i < boardInstance.size(); i++){
                     boardInstance.getNode(i)->setMarble(NULL);
                 }
+                // set the marbles
                 for(int i = 0; i < NB_TOTAL_MARBLE; i++){
                     boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
                 }
-                /* possiblement inutile
-                if((currentTree->getLevel()) %2 == 0){
-                    player->computePossibilities();
-                }else{
-                    player->getEnnemy()->computePossibilities();
-                }
-                */
 
-                system("pause");
+                cin.get();
 
                 this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
             }

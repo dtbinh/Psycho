@@ -102,13 +102,13 @@ bool Board::loadPaths(string file){
 
         this->nbPaths = atoi(line.c_str());
 
-        this->paths = (Path**) malloc(sizeof(Path*) * nbPaths);
-        nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
+        this->paths = new Path*[nbPaths];
+        nodeList = new int[MAXPATHSIZE];
 
         cout << nbPaths << " paths found" << endl;
 
         while(!fichier.eof()){
-            nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
+            nodeList = new int[MAXPATHSIZE];
             getline(fichier, line);
             string delimiter = " : ";
             string pathId = line.substr(0, line.find(delimiter));
@@ -143,7 +143,7 @@ bool Board::loadPaths(string file){
  */
 bool Board::checkDeaths(Player * me, Node * dst){
     // A) CHECK SUICIDE
-    if(dst->getMarble()->isCatch()){
+    if(dst->getMarble()->isCaught()){
         cout << "(" << dst->getId() << ") " << Marble::getNameFromType(dst->getMarble()->getType()) << " suicided !" << endl;
         dst->getMarble()->kill();
         // if psychologist suicided the other player can revive
@@ -162,7 +162,7 @@ bool Board::checkDeaths(Player * me, Node * dst){
                     Marble * currentMarble = this->getNode(currentPath->getNodeId(j))->getMarble();
                     // if marble on current node check if catch
                     if(currentMarble){
-                        if(currentMarble->isCatch()){
+                        if(currentMarble->isCaught()){
                             currentMarble->kill();
                             // If the marble killed was a psychologist the player can revive a marble
                             if(currentMarble->getType()==PSYCHOLOGIST){

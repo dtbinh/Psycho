@@ -37,53 +37,53 @@ int main()
 {
     Board& theboard = Board::Instance();
     cout << "Board created ! With " << theboard.size() << " nodes." << endl;
-    Player* blanc = new Player(PLAYERONE, true);
-    Player* noir = new Player(PLAYERTWO, true);
-    string vainqueur;
+    Player* white = new Player(PLAYERONE, true);
+    Player* black = new Player(PLAYERTWO, true);
+    string winner;
 
 
-    blanc->setEnnemy(noir);
-    noir->setEnnemy(blanc);
+    white->setEnnemy(black);
+    black->setEnnemy(white);
 
-    noir->computePossibilities();
-    blanc->computePossibilities();
+    black->computePossibilities();
+    white->computePossibilities();
 
 
 
     Minimax* mini = new Minimax();
-    MyVectorOfTree* tmp = mini->initParcours(blanc);
-    mini->bestTree(blanc, tmp, time(0));
+    MyVectorOfTree* tmp = mini->initParcours(white);
+    mini->bestTree(white, tmp, time(0));
 
 
 
     // PArcourir tableau de char pour deplacer les marbles
     // getmarblefromint(i).setnodeid(char(i))
 
-   Util::updatePositionsTxt(blanc, noir);
+   Util::updatePositionsTxt(white, black);
     system("pause");
     // boucle de jeu
-    while(!blanc->hasLost() && !noir->hasLost()){
-        blanc->play();
-        noir->computePossibilities();
-        blanc->computePossibilities();
-        Util::updatePositionsTxt(blanc, noir);
-        if(!blanc->hasLost() && !noir->hasLost()){
-            noir->play();
-            noir->computePossibilities();
-            blanc->computePossibilities();
-            Util::updatePositionsTxt(blanc, noir);
+    while(!white->hasLost() && !black->hasLost()){
+        white->play();
+        black->computePossibilities();
+        white->computePossibilities();
+        Util::updatePositionsTxt(white, black);
+        if(!white->hasLost() && !black->hasLost()){
+            black->play();
+            black->computePossibilities();
+            white->computePossibilities();
+            Util::updatePositionsTxt(white, black);
         }
     }
-    if(blanc->hasLost()){
-        vainqueur =  "noir";
+    if(white->hasLost()){
+        winner =  "black";
     }
     else{
-        vainqueur = "blanc";
+        winner = "white";
     }
 
-    cout << vainqueur << " a gagné ! Vive " << vainqueur << " !!!!" << endl;
+    cout << winner << " a gagné ! Vive " << winner << " !!!!" << endl;
 
-    Util::updatePositionsTxt(blanc, noir);
+    Util::updatePositionsTxt(white, black);
 
     //blanc->fillDecisionTree();
 

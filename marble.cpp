@@ -104,7 +104,7 @@ int Marble::getNbComputedNodes(){
  * @return true if this Marble is dead (outside of the visible board), false otherwise
  */
 bool Marble::isDead(){
-    return myNode > 162;
+    return myNode > DEADLIMIT;
 }
 
 /**
@@ -299,7 +299,7 @@ void Marble::computeAccessibleNodes(){
  * If this marble is surrounded by two DOCTOR and watched by an INFORMER on another path it is captured
  * @return true if the marble, on which isCatch is called, is captured. false otherwise
  */
-bool Marble::isCatch(){
+bool Marble::isCaught(){
 
     Board& boardInstance = Board::Instance();
     int surroundedOnPath[NB_CROSSING_PATHS];
@@ -509,6 +509,5 @@ void Marble::computeAccessibleNodesForPath(Path *p, int marbleId){
         nbComputedNodes = nbComputedNodes - startAccessibleNodes;
         hadPsychologist = true;
     }
-
 }
 

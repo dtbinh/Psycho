@@ -22,8 +22,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYERONE   1
-#define PLAYERTWO   2
+#define PLAYERONE   0
+#define PLAYERTWO   1
 #define NBMARBLES   13
 
 #include <string>
