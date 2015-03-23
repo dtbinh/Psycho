@@ -352,19 +352,13 @@ bool Marble::isCatch(){
 
                     //Browse the begining of the Path
                     for(int k = j-1; k >=0 ; k--){
+                    
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
 
                         if(currentMarble != NULL && currentMarble->owner != this->owner){
-
-                            if(currentMarble->getType() == DOCTOR && doctorAfter && !surrounded){
-                                surrounded = true;
-                            }else if(currentMarble->getType() == DOCTOR){
-                                doctorBefore = true;
-                            }
-
-                            if(currentMarble->getType() == INFORMER && !watched){
-                                watched = true;
-                            }
+                            if(currentMarble->getType() == DOCTOR && doctorAfter && !surrounded) surrounded = true;
+                            else if(currentMarble->getType() == DOCTOR) doctorBefore = true;
+                            if(currentMarble->getType() == INFORMER && !watched) watched = true;
                         }
                     }
 
@@ -375,21 +369,12 @@ bool Marble::isCatch(){
 
                         //The current Node contains an opponent's Marble
                         if(currentMarble != NULL && currentMarble->owner != this->owner){
-
-                            if(currentMarble->getType() == DOCTOR && doctorBefore && !surrounded){
-                                surrounded = true;
-                            }else if(currentMarble->getType() == DOCTOR){
-                                doctorAfter = true;
-                            }
-
-                            if(currentMarble->getType() == INFORMER && !watched){
-                                watched = true;
-                            }
+                            if(currentMarble->getType() == DOCTOR && doctorBefore && !surrounded) surrounded = true;
+                            else if(currentMarble->getType() == DOCTOR) doctorAfter = true;
+                            if(currentMarble->getType() == INFORMER && !watched) watched = true;
                         }
 
-                        if(!doctorAfter && !surrounded && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()){
-                            specialNodeBeforeDoctor++;
-                        }
+                        if(!doctorAfter && !surrounded && boardInstance.getNode(currentPath->getNodeId(k))->isSpecial()) specialNodeBeforeDoctor++;
 
                     }
 
@@ -416,19 +401,10 @@ bool Marble::isCatch(){
                     }
                 }
 
-                if(specialNodeBeforeDoctor > 1){
-                    surrounded = false;
-                }
-
-                if(surrounded){
-                    surroundedOnPath[surroundedOnIndex] = i;
-                    surroundedOnIndex++;
-                }
-
-                if(watched){
-                    watchedOnPath[watchedOnIndex] = i;
-                    watchedOnIndex++;
-                }
+                if(specialNodeBeforeDoctor > 1) surrounded = false;
+                if(surrounded) surroundedOnPath[surroundedOnIndex++] = i;
+                if(watched) watchedOnPath[watchedOnIndex++] = i;
+                
             }
         }
     }

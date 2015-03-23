@@ -207,10 +207,8 @@ bool Player::move(Node * src, Node * dst){
             return false;
         }
     }
-    else{
-        cout << "source node invalid (" << src->getId() << ")" << endl;
-        return false;
-    }
+    
+    cout << "source node invalid (" << src->getId() << ")" << endl;
     return false;
 }
 

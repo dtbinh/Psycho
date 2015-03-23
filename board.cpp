@@ -50,14 +50,8 @@ Board::Board()
     nodes = new Node*[BOARDSIZE];
 
     for(int i = 0 ; i <= BOARDNODES ; i++){
-        // special nodes        
-        if(i == 0 || i == 155 || i == 8 || i == 93 || i == 101 || i == 147){
-            this->nodes[i] = new Node(i, NULL, true, false);
-        }
-        // others nodes
-        else{
-            this->nodes[i] = new Node(i, NULL, false, false);
-        }
+    	bool isSpecialNode = (i == 0 || i == 155 || i == 8 || i == 93 || i == 101 || i == 147);
+        this->nodes[i] = new Node(i, NULL, isSpecialNode, false);
     }
 
     // setPaths for all the nodes
@@ -90,49 +84,46 @@ Board& Board::Instance(){
  * @return true if the file is correctly loaded, false otherwise
  */
 bool Board::loadPaths(string file){
+
     ifstream fichier;
     fichier.open(file.c_str(), ios::in); // opening file in read only
     int * nodeList;
 
-    if(fichier) // success
-    {
-        string line;
-        // 1st line : number of paths
-        getline(fichier, line);
+	if (!fichier) return false;
 
-        this->nbPaths = atoi(line.c_str());
+	string line;
+	// 1st line : number of paths
+	getline(fichier, line);
 
-        this->paths = (Path**) malloc(sizeof(Path*) * nbPaths);
-        nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
+	this->nbPaths = atoi(line.c_str());
 
-        cout << nbPaths << " paths found" << endl;
+	this->paths = (Path**) malloc(sizeof(Path*) * nbPaths);
+	nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
 
-        while(!fichier.eof()){
-            nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
-            getline(fichier, line);
-            string delimiter = " : ";
-            string pathId = line.substr(0, line.find(delimiter));
-            string rest = line.substr(line.find(delimiter)+3, line.length()); // +3 for the 2 spaces and the :
-            int nbNodes;
+	cout << nbPaths << " paths found" << endl;
 
-            nbNodes = Util::split(nodeList, rest, ' ');
+	while(!fichier.eof()){
+		nodeList = (int *) malloc(sizeof(int) * MAXPATHSIZE);
+		getline(fichier, line);
+		string delimiter = " : ";
+		string pathId = line.substr(0, line.find(delimiter));
+		string rest = line.substr(line.find(delimiter)+3, line.length()); // +3 for the 2 spaces and the :
+		int nbNodes;
 
-            if(atoi(pathId.c_str()) == 0){
-                this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, true);
-            }
-            else{
-                this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, false);
-            }
-        }
+		nbNodes = Util::split(nodeList, rest, ' ');
 
-        fichier.close();
+		if(atoi(pathId.c_str()) == 0){
+			this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, true);
+		}
+		else{
+			this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, false);
+		}
+	}
 
-        return true;
-    }
-    else{
-        cerr << "Error in file open " << file << endl;
-        return false;
-    }
+	fichier.close();
+
+	return true;
+        
 }
 
 /**
