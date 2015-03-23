@@ -67,7 +67,7 @@ Player::Player(int player, bool human)
                     readingFinished = true;
                 }
                 else{
-                    disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2]);
+                    disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2], this);
                     boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
                     dispId++;
                 }
@@ -95,7 +95,7 @@ Player::Player(int player, bool human)
                 // reading line by line
                 getline(fichier, line);
                 Util::split(currentMarbleData, line, ' ');
-                disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2]);
+                disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2], this);
                 boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
                 dispId++;
             }
@@ -189,7 +189,7 @@ bool Player::move(Node * src, Node * dst){
         bool dstNodeIsCorrect = false;
         int * correctDestinations = src->getMarble()->getAccessibleNodes();
         //cout << "checking " << src->getMarble()->getNbComputedNodes() << " nodes" << endl;
-        for(int i = 0 ; i < src->getMarble()->getNbComputedNodes(); i++){
+        for(int i = 0 ; i < src->getMarble()->getNbAccessibleNodes(); i++){
             // If dst found then it's correct
             if(correctDestinations[i] == dst->getId()){
                 dstNodeIsCorrect = true;

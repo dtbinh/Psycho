@@ -90,7 +90,7 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
 
     while(!list->isEmpty() && timeout+60 > time(0)){
         currentTree = list->getTree(treeCpt);
-
+        currentTree->createNextSons(0);
 
         allMarbles = currentTree->getDispositionFromMarblePosition();
         for(int i = 0; i < NB_TOTAL_MARBLE; i++){
@@ -109,7 +109,7 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
 
             currentMarble = playerMarbles[i];
             accessibleNodes = currentMarble->getAccessibleNodes();
-            for(int j = 0; j < currentMarble->getNbComputedNodes(); j++){
+            for(int j = 0; j < currentMarble->getNbAccessibleNodes(); j++){
                 cout << "Taille de l'arbre : " << treeSize++ << endl;
                 if(currentTree->getLevel() %2 == 0){
                     player->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
@@ -146,8 +146,6 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 for(int i = 0; i < NB_TOTAL_MARBLE; i++){
                     boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
                 }
-
-                cin.get();
 			    cin.get();
 
                 this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));

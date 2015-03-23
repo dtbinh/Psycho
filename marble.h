@@ -42,7 +42,7 @@ class Marble
 {
 public:
     Marble();
-    Marble(int nodeId, int type);
+    Marble(int nodeId, int type, Player *owner);
     ~Marble();
 
     void computeAccessibleNodes();
@@ -60,16 +60,13 @@ public:
     bool isCaught();
 
     int getType();
-    int getNbComputedNodes();
+    int getNbAccessibleNodes();
     bool isDead(); // check if node > 162 (dead)
 
 private:
-    void computeAccessibleNodesForPath(Path*, int marbleId);    // Not used anymore
     int type;                                                   // PSYCHOPATH, INFORMER, DOCTOR or PSYCHOLOGIST
     int* accessibleNodes;                                       // an array containning the ids of the Nodes toward which this Marble can move
     int nbComputedNodes;                                        // the number of these Nodes
-    bool hadPsychologist;                                       // Not used anymore
-    bool stuck;                                                 // Not used anymore
     int myNode;                                                 // the id that currently contains this Marble
     Player* owner;                                              // the owner of this Marble
 };
