@@ -24,13 +24,12 @@
 
 #include <string>
 #include "node.h"
+#include "path.h"
 
 #define BOARDNODES 162
 #define BOARDSIZE 190
 #define MAXPATHSIZE 50
 
-
-class Path;
 class Marble;
 
 using namespace std;
