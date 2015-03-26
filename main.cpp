@@ -24,44 +24,20 @@
 #include <ctime>
 
 #include "util.h"
-#include "board.h"
-#include "player.h"
-#include "path.h"
-#include "tree.h"
-#include "minimax.h"
-#include "node.h"
-#include "marble.h"
-#include "myvectoroftree.h"
+#include "game.h"
 
 using namespace std;
 
 int main()
 {
-    Board& theboard = Board::Instance();
-    cout << "Board created ! With " << theboard.size() << " nodes." << endl;
-    Player* white = new Player(PLAYERONE);
-    Player* black = new Player(PLAYERTWO);
-    string winner;
+   Game * game = new Game();
 
-
-    white->setEnnemy(black);
-    black->setEnnemy(white);
-
-    black->computePossibilities();
-    white->computePossibilities();
-
-
-
-    Minimax* mini = new Minimax();
-    MyVectorOfTree* tmp = mini->initParcours(white);
-    mini->bestTree(white, tmp, time(0));
-
-
+   game->testMinimax();
 
     // PArcourir tableau de char pour deplacer les marbles
     // getmarblefromint(i).setnodeid(char(i))
 
-   Util::updatePositionsTxt(white, black);
+   //Util::updatePositionsTxt(white, black);
     
     //system("pause");
     cin.get();
@@ -71,6 +47,7 @@ int main()
     // main play method (if uncomment, also uncomment play() of Player)
     /**
     // boucle de jeu
+    string winner;
     while(!white->hasLost() && !black->hasLost()){
         white->play();
         black->computePossibilities();

@@ -20,7 +20,6 @@
 */
 
 #include "tree.h"
-#include "minimax.h"
 #include "marble.h"
 #include "myvectoroftree.h"
 #include <iostream>
@@ -28,12 +27,6 @@
 #include <cstdlib>
 
 using namespace std;
-
-Move::Move(int from, int to){
-    this->fromNode = from;
-    this->toNode = to;
-    this->consequence = NULL;
-}
 
 /**
  * @brief Tree::Tree constructor void of Tree class
@@ -43,8 +36,7 @@ Tree::Tree()
     level = 0;
     nbSons = 0;
     father = pT_NULL;
-    fatherMove = NULL;
-    sons = NULL;
+    sons = new MyVectorOfTree();
     value = -1;
     marblesPosition = new int[NB_TOTAL_MARBLE];
 }
@@ -57,25 +49,19 @@ Tree::Tree(pTree father){
     level = 0;
     nbSons = 0;
     this->father = father;
-    fatherMove = NULL;
-    sons = NULL;
+    sons = new MyVectorOfTree();
     value = -1;
     marblesPosition = new int[NB_TOTAL_MARBLE];
 }
 
-/**
- * @brief Tree::Tree constructor of Tree class, not used anymore
- * @param father the Tree object father of this Tree
- * @param fatherMove Move object represent the branch from father to this Tree
- */
-Tree::Tree(pTree father, Move *fatherMove){
+Tree::Tree(pTree father, Marble **dispositionPlayerOne, Marble **dispositionPlayerTwo){
     level = 0;
     nbSons = 0;
     this->father = father;
-    this->fatherMove = fatherMove;
-    sons = NULL;
+    sons = new MyVectorOfTree();
     value = -1;
     marblesPosition = new int[NB_TOTAL_MARBLE];
+    this->setMarblePositionsWithDisposition(dispositionPlayerOne, dispositionPlayerTwo);
 }
 
 Tree::~Tree()
@@ -178,7 +164,7 @@ void Tree::displayTreeNode(){
 }
 
 void Tree::displayMarbles(){
-    for(int i = 0 ; i < NBMARBLES ; i++){
+    for(int i = 0 ; i < NB_TOTAL_MARBLE/2 ; i++){
         cout << marblesPosition[i] << " ; ";
     }
     cout << endl;
@@ -308,11 +294,11 @@ int Tree::getMinValue(){
 
 
 void Tree::setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble** dispositionPlayerTwo){
-    for(int i = 0 ; i < NBMARBLES ; i++){
+    for(int i = 0 ; i < NB_TOTAL_MARBLE / 2 ; i++){
         this->marblesPosition[i] = dispositionPlayerOne[i]->getMyNode();
     }
-    for(int i = 0; i < NBMARBLES; i++){
-        this->marblesPosition[i+NBMARBLES] = dispositionPlayerTwo[i]->getMyNode();
+    for(int i = 0; i < NB_TOTAL_MARBLE / 2; i++){
+        this->marblesPosition[i+(NB_TOTAL_MARBLE / 2)] = dispositionPlayerTwo[i]->getMyNode();
     }
 }
 

@@ -22,9 +22,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "util.h"
+
 #define PLAYERONE   0
 #define PLAYERTWO   1
-#define NBMARBLES   13
+#define NBMARBLES   NB_TOTAL_MARBLE / 2
 
 #include <string>
 
@@ -54,7 +56,7 @@ public:
     bool respawnUnit(Node * psychologistDeathNode, int marbleWanted);
 
     Player * getEnnemy();
-    void setEnnemy(Player * p);
+    void setOpponent(Player * p);
 
     Tree * fillDecisionTree(Tree * tree, int depth);
 

@@ -20,12 +20,8 @@
 */
 
 #include "minimax.h"
-#include "tree.h"
 #include "marble.h"
-#include "board.h"
-#include "player.h"
-#include "myvectoroftree.h"
-
+#include "game.h"
 
 Minimax::Minimax()
 {
@@ -60,11 +56,11 @@ void Minimax::treeStatus(int level, int value, int maxValue, int bestTreeIndex){
 
 MyVectorOfTree* Minimax::initParcours(Player* player){
     MyVectorOfTree* list = new MyVectorOfTree();
-    Tree* root = new Tree();
+    Tree* root;
     if(player->getWhoAmI() == PLAYERONE){
-        root->setMarblePositionsWithDisposition(player->getDisposition(), player->getEnnemy()->getDisposition());
+        root = new Tree(NULL, player->getDisposition(), player->getEnnemy()->getDisposition());
     }else{
-        root->setMarblePositionsWithDisposition(player->getEnnemy()->getDisposition(), player->getDisposition());
+        root = new Tree(NULL, player->getEnnemy()->getDisposition(), player->getDisposition());
     }
     list->addTree(root);
     root->setLevel(0);
@@ -86,7 +82,6 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
     Marble** playerMarbles;
     Tree* currentTree;
     int treeCpt = 0;
-    int treeSize = 0;
 
     while(!list->isEmpty() && timeout+TIMEOUT > time(0)){
         currentTree = list->getTree(treeCpt);
@@ -110,19 +105,17 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
             currentMarble = playerMarbles[i];
             accessibleNodes = currentMarble->getAccessibleNodes();
             for(int j = 0; j < currentMarble->getNbAccessibleNodes(); j++){
-                cout << "Taille de l'arbre : " << treeSize++ << endl;
                 if(currentTree->getLevel() %2 == 0){
                     player->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
                 }else{
                     player->getEnnemy()->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
                 }
-                sonTree = new Tree(currentTree);
-                sonTree->setLevel(currentTree->getLevel()+1);
                 if(player->getWhoAmI() == PLAYERONE){
-                    sonTree->setMarblePositionsWithDisposition(player->getDisposition(), player->getEnnemy()->getDisposition());
+                    sonTree = new Tree(currentTree, player->getDisposition(), player->getEnnemy()->getDisposition());
                 }else{
-                    sonTree->setMarblePositionsWithDisposition(player->getEnnemy()->getDisposition(), player->getDisposition());
+                    sonTree = new Tree(currentTree, player->getEnnemy()->getDisposition(), player->getDisposition());
                 }
+                sonTree->setLevel(currentTree->getLevel()+1);
                 sonTree->setValue(this->eval(sonTree->getMarbleDisposition(), player));
                 if(sonTree->getValue() > this->bestValue){
                     this->bestValue = sonTree->getValue();
@@ -149,11 +142,13 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
 
                 //cin.get();
 
-                this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
+                //this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
             }
         }
         treeCpt++;
     }
+
+    this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
 
     return this->bestSon;
 }

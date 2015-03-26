@@ -20,6 +20,7 @@
 */
 
 #include "node.h"
+#include "marble.h"
 #include "path.h"
 
 

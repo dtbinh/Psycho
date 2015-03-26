@@ -26,10 +26,9 @@
 
 #include <ctime>
 #include <iostream>
+#include "myvectoroftree.h"
 
 class Player;
-class MyVectorOfTree;
-class Tree;
 
 using namespace std;
 

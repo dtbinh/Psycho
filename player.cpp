@@ -34,8 +34,9 @@
 
 
 /**
- * Player 0 is human, player 1 is computer
-*/
+ * @brief Player::Player Initialize player
+ * @param player Player 0 is human, player 1 is computer
+ */
 Player::Player(int player)
 {
     string file = DATA_PATH + "marbles.txt";
@@ -48,7 +49,6 @@ Player::Player(int player)
     if(fichier) // success
     {
         string line;
-        bool readingFinished = false; // set to true when all marbles have been read
         int dispId = 0; // id for disposition array
         int currentMarbleData[3]; // Array storing the line read
         nbMarbles = NBMARBLES;
@@ -120,15 +120,22 @@ Player::~Player()
     }
 }*/
 
-Player * Player::getEnnemy(){
-    return this->ennemy;
-}
+/**
+ * @brief Player::getEnnemy get pointer of the other player
+ * @return pointer of the other player
+ */
+Player * Player::getEnnemy(){return this->ennemy;}
 
-void Player::setEnnemy(Player * p){
-    this->ennemy = p;
-}
+/**
+ * @brief Player::setEnnemy set pointer of the other player
+ * @param p pointer of the other player
+ */
+void Player::setOpponent(Player * p){this->ennemy = p;}
 
-// Check if psychopath is dead
+/**
+ * @brief Player::hasLost Check if psychopath is dead
+ * @return true if player has lost
+ */
 bool Player::hasLost(){
     for(int i = 0 ; i < nbMarbles ; i++){
         if(disposition[i]->getType() == PSYCHOPATH){
@@ -140,7 +147,12 @@ bool Player::hasLost(){
     return false;
 }
 
-// Check source node and destination node and do the move if possible. Return false if invalid move
+/**
+ * @brief Player::move Check source node and destination node and do the move if possible.
+ * @param src node where the marble is
+ * @param dst node where the marble goes
+ * @return false if invalid move
+ */
 bool Player::move(Node * src, Node * dst){
     Board& boardInstance = Board::Instance();
     // 0 if nodes exist
@@ -182,6 +194,10 @@ bool Player::move(Node * src, Node * dst){
     return false;
 }
 
+/**
+ * @brief Player::askRespawn allow player to respawn one of his marbles
+ * @param psychologistDeathNode node where the psychologist died
+ */
 void Player::askRespawn(Node * psychologistDeathNode){
     int choice=0;
     if(this->whoAmI == PLAYERONE){
@@ -198,8 +214,12 @@ void Player::askRespawn(Node * psychologistDeathNode){
     respawnUnit(psychologistDeathNode, choice);
 }
 
-// Move the first dead marble wanted encountered to the old psychologist node
-// return false if can't
+/**
+ * @brief Player::respawnUnit Move the first dead marble wanted encountered to the old psychologist node
+ * @param psychologistDeathNode node where the psychologist died
+ * @param marbleWanted ID of marble type wanted
+ * @return false if can't
+ */
 bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
     Board& boardInstance = Board::Instance();
     // Seek for the marble wanted
@@ -217,12 +237,19 @@ bool Player::respawnUnit(Node * psychologistDeathNode, int marbleWanted){
     return false;
 }
 
+/**
+ * @brief Player::computePossibilities
+ * calls computeAccessibleNodes for each marble
+ */
 void Player::computePossibilities(){
     for(int i = 0 ; i < nbMarbles ; i++){
         disposition[i]->computeAccessibleNodes();
     }
 }
 
+/**
+ * @brief Player::displayMarbles display all marbles with few informations in console
+ */
 void Player::displayMarbles(){
    string name;
    for(int i = 0; i < NBMARBLES; i++){
@@ -232,11 +259,16 @@ void Player::displayMarbles(){
    }
 }
 
-int Player::getWhoAmI(){
-    return whoAmI;
-}
+/**
+ * @brief Player::getWhoAmI
+ * @return PLAYERONE or PLAYERTWO
+ */
+int Player::getWhoAmI(){return whoAmI;}
 
-// affiche au format des fichiers txt de marbles
+/**
+ * @brief Player::getStringMarblesForFile
+ * @return string in marbles.txt format to write in currentGame.txt
+ */
 string Player::getStringMarblesForFile(){
     stringstream sstm;
 
@@ -244,11 +276,12 @@ string Player::getStringMarblesForFile(){
     for(int i = 0 ; i < nbMarbles ; i++){
         sstm << whoAmI << " " << disposition[i]->getMyNode() << " " << disposition[i]->getType() << endl;
     }
-
     return sstm.str();
 }
 
-Marble** Player::getDisposition(){
-    return this->disposition;
-}
+/**
+ * @brief Player::getDisposition
+ * @return array of his marbles
+ */
+Marble** Player::getDisposition(){return this->disposition;}
 

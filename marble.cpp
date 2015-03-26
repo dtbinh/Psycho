@@ -20,7 +20,7 @@
 */
 
 #include "marble.h"
-#include "path.h"
+#include "player.h"
 #include "board.h"
 #include <cstdlib>
 #include <iostream>
@@ -210,7 +210,7 @@ void Marble::computeAccessibleNodes(){
                         }
                     }
                 }else{
-                    for(int k = j+1; k != j; k = (k+1) % currentPath->getNbNodes() ){
+                    for(int k = (j+1) % currentPath->getNbNodes(); k != j; k = (k+1)%currentPath->getNbNodes() ){
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                         // There is no Marble in that node and no Marble encountered, so that node is added to the accessibleNodes
                         if(currentMarble == NULL){
@@ -231,7 +231,7 @@ void Marble::computeAccessibleNodes(){
 
                     marbleEncountered = false;
                     //Browse the begining of the Path
-                    for(int k = j-1; k != j ; k = k==0 ? currentPath->getNbNodes() - 1 : k-1){
+                    for(int k = (j == 0) ? currentPath->getNbNodes() -1 : j-1; k !=j ; k = (k == 0) ? currentPath->getNbNodes()-1 : k-1){
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
                         // There is no Marble in that node and no Marble encountered, so that node is added to the accessibleNodes
                         if(currentMarble == NULL){
@@ -342,7 +342,7 @@ bool Marble::isCaught(){
 
                 }else{
 
-                    for(int k = j+1; k != j; k = (k+1)%currentPath->getNbNodes() ){
+                    for(int k = (j+1) % currentPath->getNbNodes(); k != j; k = (k+1)%currentPath->getNbNodes() ){
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
 
                         //The current Node contains an opponent's Marble
@@ -357,7 +357,7 @@ bool Marble::isCaught(){
                     }
 
                     //Browse the begining of the Path
-                    for(int k = j-1; k !=j ; k = (k == 0) ? currentPath->getNbNodes()-1 : k-1){
+                    for(int k = (j == 0) ? currentPath->getNbNodes() -1 : j-1; k !=j ; k = (k == 0) ? currentPath->getNbNodes()-1 : k-1){
                         currentMarble = boardInstance.getNode(currentPath->getNodeId(k))->getMarble();
 
                         if(currentMarble != NULL && currentMarble->owner != this->owner){
