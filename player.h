@@ -66,7 +66,7 @@ public:
     bool hasLost();
 
     // if human ask to play, else AI plays (doing a move)
-    void play();
+    //void play();
 };
 
 #endif // PLAYER_H

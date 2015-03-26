@@ -94,7 +94,7 @@ Player::~Player()
 
 }
 
-void Player::play(){
+/*void Player::play(){
     Board& boardInstance = Board::Instance();
     int idSrc;
     int idDst;
@@ -118,7 +118,7 @@ void Player::play(){
     else{
 
     }
-}
+}*/
 
 Player * Player::getEnnemy(){
     return this->ennemy;

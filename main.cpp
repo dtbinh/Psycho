@@ -68,7 +68,7 @@ int main()
 
 
 
-    // BOUCLE DE JEU
+    // main play method (if uncomment, also uncomment play() of Player)
     /**
     // boucle de jeu
     while(!white->hasLost() && !black->hasLost()){
