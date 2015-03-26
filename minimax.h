@@ -22,6 +22,8 @@
 #ifndef MINIMAX_H
 #define MINIMAX_H
 
+#define TIMEOUT 60
+
 #include <ctime>
 #include <iostream>
 

@@ -39,8 +39,8 @@ int main()
 {
     Board& theboard = Board::Instance();
     cout << "Board created ! With " << theboard.size() << " nodes." << endl;
-    Player* white = new Player(PLAYERONE, true);
-    Player* black = new Player(PLAYERTWO, true);
+    Player* white = new Player(PLAYERONE);
+    Player* black = new Player(PLAYERTWO);
     string winner;
 
 
@@ -65,7 +65,11 @@ int main()
     
     //system("pause");
     cin.get();
-    
+
+
+
+    // BOUCLE DE JEU
+    /**
     // boucle de jeu
     while(!white->hasLost() && !black->hasLost()){
         white->play();
@@ -91,7 +95,7 @@ int main()
     Util::updatePositionsTxt(white, black);
 
     //blanc->fillDecisionTree();
-
+*/
     return 0;
 }
 

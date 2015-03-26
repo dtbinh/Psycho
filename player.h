@@ -41,10 +41,9 @@ private:
     Marble** disposition;   // an array containing this Player's Marbles
     int nbMarbles;          // the number of Marble this Player owns
     int whoAmI;             // PLAYERONE or PLAYERTWO
-    bool isHuman;           // true if human, false if AI
     Player * ennemy;        // the opponent of this Player for this game
 public:
-    Player(int, bool);
+    Player(int); // initialize a player with his marbles
     ~Player();
     void displayMarbles(); // show marbles in console
     string getStringMarblesForFile();

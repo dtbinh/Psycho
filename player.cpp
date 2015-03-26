@@ -33,85 +33,55 @@
 
 
 
-// set human to true if human, false if AI
-Player::Player(int player, bool human)
+/**
+ * Player 0 is human, player 1 is computer
+*/
+Player::Player(int player)
 {
-    this->isHuman = human;
     string file = DATA_PATH + "marbles.txt";
     ifstream fichier;
     fichier.open(file.c_str(), ios::in); // opening file in read only
+    Board& boardInstance = Board::Instance();
+    whoAmI = player;
+    nbMarbles = NBMARBLES;
 
     if(fichier) // success
     {
         string line;
-        // 1st line : number of marbles for player one
-        getline(fichier, line);
-        int playerOneMarbles = atoi(line.c_str());
-        int playerTwoMarbles = 0;
-        cout << "p1 " << playerOneMarbles << endl;
-        int readingFinished = false; // set to true when all marbles have been read
-
+        bool readingFinished = false; // set to true when all marbles have been read
         int dispId = 0; // id for disposition array
+        int currentMarbleData[3]; // Array storing the line read
+        nbMarbles = NBMARBLES;
 
-        int currentMarbleData[3];
-        if(player == PLAYERONE){            
-            Board& boardInstance = Board::Instance();
-            this->disposition = new Marble*[playerOneMarbles];
-            whoAmI = PLAYERONE;
-            while(!fichier.eof() && !readingFinished){
+        if(player == PLAYERONE || player == PLAYERTWO){
+            this->disposition = new Marble*[nbMarbles];
+
+            // reading marbles
+            while(!fichier.eof()){
                 // reading line by line
                 getline(fichier, line);
-                int nb = Util::split(currentMarbleData, line, ' ');
-                // if only one number, is the playerTwo number of marbles so we stop the reading
-                if(nb == 1){
-                    readingFinished = true;
-                }
-                else{
+                Util::split(currentMarbleData, line, ' ');
+
+                // Check player ID
+                if(currentMarbleData[0] == player){
                     disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2], this);
                     boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
                     dispId++;
                 }
             }
-            nbMarbles = playerOneMarbles;
             for(int i = 0; i < nbMarbles; i++){
-                Util::setMarbleInt(i, disposition[i]);
-            }
-        }
-        else if(player == PLAYERTWO){
-            whoAmI = PLAYERTWO;
-            // seek number of marbles for player 2
-            for(int i = 0 ; i < playerOneMarbles ; i++){
-                getline(fichier, line);
-            }
-
-            // After player 1 we have the number of marbles for player 2
-            getline(fichier, line);
-            playerTwoMarbles = atoi(line.c_str());
-            cout << "p2 " << playerTwoMarbles << endl;
-
-            Board& boardInstance = Board::Instance();
-            this->disposition = new Marble*[playerTwoMarbles];
-            while(!fichier.eof() && !readingFinished){
-                // reading line by line
-                getline(fichier, line);
-                Util::split(currentMarbleData, line, ' ');
-                disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2], this);
-                boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
-                dispId++;
-            }
-            nbMarbles = playerTwoMarbles;
-            for(int i = 0; i < nbMarbles; i++){
-                Util::setMarbleInt(i+13, disposition[i]);
+                Util::setMarbleInt(i + (player * 13), disposition[i]);
             }
         }
         else{
-            // ?
-            readingFinished = true;
+            cerr << "Error in Player initialization" << endl;
+            exit(EXIT_FAILURE);
         }
 
-        for(int i = 0; i < NBMARBLES; i++){
+        for(int i = 0; i < nbMarbles; i++){
             disposition[i]->setOwner(this);
         }
+
         fichier.close();
     }
     else{
@@ -130,7 +100,7 @@ void Player::play(){
     int idDst;
     bool correctMove = false;
     // HUMAN PLAYER
-    if(this->isHuman){
+    if(this->whoAmI == PLAYERONE){
         while(!correctMove){
             cout << "Player " << this->whoAmI << " : Do a move !" << endl;
             cout << "From ?" << endl;
@@ -214,7 +184,7 @@ bool Player::move(Node * src, Node * dst){
 
 void Player::askRespawn(Node * psychologistDeathNode){
     int choice=0;
-    if(this->isHuman){
+    if(this->whoAmI == PLAYERONE){
         cout << "Congrats, you can revive one of your marbles !" << endl;
         cout << "please type the number of the marble you want" << endl;
         cout << "1 - Informer" << endl;
@@ -269,9 +239,8 @@ int Player::getWhoAmI(){
 // affiche au format des fichiers txt de marbles
 string Player::getStringMarblesForFile(){
     stringstream sstm;
-    // 1) nbMarbles
-    sstm << nbMarbles << endl;
-    // 2) Write player / NodeID / MarbleType
+
+    // Write player / NodeID / MarbleType
     for(int i = 0 ; i < nbMarbles ; i++){
         sstm << whoAmI << " " << disposition[i]->getMyNode() << " " << disposition[i]->getType() << endl;
     }
