@@ -24,40 +24,23 @@
 
 #include "util.h"
 // Class represent a move from the psychoPath
-
-// Not used : copy of current board instead
-class Move{
-public:
-    Move();
-    Move(int from, int to);
-
-    Move* getConsequence();
-    void setConsequence();
-
-    char* getDispositionFromValue(int value);
-    Move* transposeMove();
-private:
-    int fromNode;           // index of the node from which the Marble moved
-    int toNode;             // index of the node to which the Marble moved
-    Move* consequence;      // a move that result of this move : a captured piece
-};
-
-
 class Tree;
-class MyVectorOfTree;
-
 typedef Tree* pTree;
+
+class MyVectorOfTree;
 
 const pTree pT_NULL = 0;
 
 class Tree
 {
 public:
+    
+    int treeSize;
+    
     Tree();
     ~Tree();
     Tree(pTree father);
-    Tree(pTree father, Move* fatherMove);
-    Tree(pTree father, int* marblesPosition);
+    Tree(pTree father, Marble ** dispositionPlayerOne, Marble **dispositionPlayerTwo);
 
     void setLevel(int _level);
     void setNbSons(int _nbSons);
@@ -80,8 +63,6 @@ public:
     int getMaxValue();
     int getMinValue();
 
-    void setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble **dispositionPlayerTwo);
-
     int *getMarbleDisposition();
     void pruneTree(int sonToPrune);
 
@@ -95,11 +76,11 @@ private:
     int level;      // The depth of the this Tree ( root at 0)
     int nbSons;     // The number of sons of this Tree, used to compute arity and mean arity
 
-    Move* fatherMove;                       // Not used anymore
     int* marblesPosition;  // Copy of the board, represented by the Marbles positions
 
     // each char is the id of the node containing the marble
 
+    void setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble **dispositionPlayerTwo);
 
     void computeLevel();
 

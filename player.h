@@ -22,9 +22,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "util.h"
+
 #define PLAYERONE   0
 #define PLAYERTWO   1
-#define NBMARBLES   13
+#define NBMARBLES   NB_TOTAL_MARBLE / 2
 
 #include <string>
 
@@ -41,10 +43,9 @@ private:
     Marble** disposition;   // an array containing this Player's Marbles
     int nbMarbles;          // the number of Marble this Player owns
     int whoAmI;             // PLAYERONE or PLAYERTWO
-    bool isHuman;           // true if human, false if AI
     Player * ennemy;        // the opponent of this Player for this game
 public:
-    Player(int, bool);
+    Player(int); // initialize a player with his marbles
     ~Player();
     void displayMarbles(); // show marbles in console
     string getStringMarblesForFile();
@@ -55,7 +56,7 @@ public:
     bool respawnUnit(Node * psychologistDeathNode, int marbleWanted);
 
     Player * getEnnemy();
-    void setEnnemy(Player * p);
+    void setOpponent(Player * p);
 
     Tree * fillDecisionTree(Tree * tree, int depth);
 
@@ -67,7 +68,7 @@ public:
     bool hasLost();
 
     // if human ask to play, else AI plays (doing a move)
-    void play();
+    //void play();
 };
 
 #endif // PLAYER_H

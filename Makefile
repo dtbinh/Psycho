@@ -1,11 +1,11 @@
 CC = g++
-CFLAGS = -I. -L -02
+CFLAGS = -I.
 LIBS = -lm -lpthread -ldl
 
 all : main
 
-main : main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o minimax.o
-	$(CC) -o psycho main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o minimax.o $(LIBS)
+main : main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o minimax.o game.o
+	$(CC) -o psycho main.o board.o path.o node.o player.o marble.o util.o myvectoroftree.o tree.o minimax.o game.o $(LIBS)
 
 main.o : main.cpp board.h player.h path.h tree.h minimax.h myvectoroftree.h minimax.h node.h marble.h
 	$(CC) -c -o $@ $< $(CFLAGS) 
@@ -35,6 +35,9 @@ tree.o : tree.cpp tree.h myvectoroftree.h minimax.h marble.h util.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 minimax.o : minimax.cpp tree.h myvectoroftree.h minimax.h marble.h board.h player.h
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+game.o : game.cpp game.h minimax.h board.h player.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean :

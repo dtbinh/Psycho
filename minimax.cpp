@@ -20,12 +20,8 @@
 */
 
 #include "minimax.h"
-#include "tree.h"
 #include "marble.h"
-#include "board.h"
-#include "player.h"
-#include "myvectoroftree.h"
-
+#include "game.h"
 
 Minimax::Minimax()
 {
@@ -54,17 +50,17 @@ int Minimax::eval(int *marblePosition, Player* player){
     return value;
 }
 
-void Minimax::treeStatus(int level, int value, int maxValue, int bestTreeIndex){
-    cout << "\rLevel : " << level << " | Value : " << value << " / " << maxValue << " | Best : " << bestTreeIndex;
+void Minimax::displayTreeStatus(Tree* T){
+    cout << "\t\t[" << T->getLevel() << "] [" << T->getValue() << "] [" << this->bestSon->treeSize << "]        \r";
 }
 
 MyVectorOfTree* Minimax::initParcours(Player* player){
     MyVectorOfTree* list = new MyVectorOfTree();
-    Tree* root = new Tree();
+    Tree* root;
     if(player->getWhoAmI() == PLAYERONE){
-        root->setMarblePositionsWithDisposition(player->getDisposition(), player->getEnnemy()->getDisposition());
+        root = new Tree(NULL, player->getDisposition(), player->getEnnemy()->getDisposition());
     }else{
-        root->setMarblePositionsWithDisposition(player->getEnnemy()->getDisposition(), player->getDisposition());
+        root = new Tree(NULL, player->getEnnemy()->getDisposition(), player->getDisposition());
     }
     list->addTree(root);
     root->setLevel(0);
@@ -80,15 +76,14 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
     Board& boardInstance = Board::Instance();
     int* accessibleNodes;
     Tree* sonTree;
+    int treeCpt = 0;
 
     Marble* currentMarble;
     Marble** allMarbles;
     Marble** playerMarbles;
     Tree* currentTree;
-    int treeCpt = 0;
-    int treeSize = 0;
 
-    while(!list->isEmpty() && timeout+60 > time(0)){
+    while(!list->isEmpty() && timeout+TIMEOUT > time(0)){
         currentTree = list->getTree(treeCpt);
         currentTree->createNextSons(0);
 
@@ -110,19 +105,17 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
             currentMarble = playerMarbles[i];
             accessibleNodes = currentMarble->getAccessibleNodes();
             for(int j = 0; j < currentMarble->getNbAccessibleNodes(); j++){
-                cout << "Taille de l'arbre : " << treeSize++ << endl;
                 if(currentTree->getLevel() %2 == 0){
                     player->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
                 }else{
                     player->getEnnemy()->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
                 }
-                sonTree = new Tree(currentTree);
-                sonTree->setLevel(currentTree->getLevel()+1);
                 if(player->getWhoAmI() == PLAYERONE){
-                    sonTree->setMarblePositionsWithDisposition(player->getDisposition(), player->getEnnemy()->getDisposition());
+                    sonTree = new Tree(currentTree, player->getDisposition(), player->getEnnemy()->getDisposition());
                 }else{
-                    sonTree->setMarblePositionsWithDisposition(player->getEnnemy()->getDisposition(), player->getDisposition());
+                    sonTree = new Tree(currentTree, player->getEnnemy()->getDisposition(), player->getDisposition());
                 }
+                sonTree->setLevel(currentTree->getLevel()+1);
                 sonTree->setValue(this->eval(sonTree->getMarbleDisposition(), player));
                 if(sonTree->getValue() > this->bestValue){
                     this->bestValue = sonTree->getValue();
@@ -146,9 +139,11 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 for(int i = 0; i < NB_TOTAL_MARBLE; i++){
                     boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
                 }
-			    cin.get();
 
-                this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
+                //cin.get();
+
+		        this->bestSon->treeSize++;
+    			this->displayTreeStatus(sonTree);
             }
         }
         treeCpt++;

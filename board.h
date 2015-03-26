@@ -23,15 +23,17 @@
 #define BOARDS_H
 
 #include <string>
+#include "path.h"
 #include "node.h"
 #include "path.h"
 
 #define BOARDNODES 162
 #define BOARDSIZE 190
 #define MAXPATHSIZE 50
+#define NBPATHS 27
 
 class Marble;
-
+class Player;
 using namespace std;
 
 const string DATA_PATH = "./data/";

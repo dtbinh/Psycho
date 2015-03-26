@@ -22,7 +22,6 @@
 #ifndef MARBLE_H
 #define MARBLE_H
 
-#include "player.h"
 #include <string>
 
 using namespace std;
@@ -36,7 +35,7 @@ using namespace std;
 
 #define DEADLIMIT 162
 
-class Path;
+class Player;
 
 class Marble
 {

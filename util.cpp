@@ -33,13 +33,21 @@ Marble** Util::intToMarble = new Marble*[NB_TOTAL_MARBLE];
 int Util::split(int * destination, string chaine, char separateur)
 {
     string::size_type stTemp = chaine.find(separateur);
+    while(chaine.substr(stTemp, 1) == " "){
+        stTemp++;
+    }
     int i = 0;
 
     while(stTemp != string::npos)
     {
         destination[i] = atoi(chaine.substr(0, stTemp).c_str());
-        chaine = chaine.substr(stTemp + 1);
+        chaine = chaine.substr(stTemp); // stTemp + 1
         stTemp = chaine.find(separateur);
+        if(stTemp < chaine.size()){
+            while(chaine.substr(stTemp, 1) == " "){
+                stTemp++;
+            }
+        }
         i++;
     }
 

@@ -19,11 +19,10 @@
 
 */
 
-#include "util.h"
-#include "node.h"
-#include "marble.h"
-#include "path.h"
 #include "board.h"
+#include "util.h"
+#include "marble.h"
+#include "player.h"
 
 
 #include <iostream>
@@ -97,10 +96,7 @@ bool Board::loadPaths(string file){
     if(fichier) // success
     {
         string line;
-        // 1st line : number of paths
-        getline(fichier, line);
-
-        this->nbPaths = atoi(line.c_str());
+        this->nbPaths = NBPATHS;
 
         this->paths = new Path*[nbPaths];
         nodeList = new int[MAXPATHSIZE];
@@ -142,12 +138,14 @@ bool Board::loadPaths(string file){
  * @return useless
  */
 bool Board::checkDeaths(Player * me, Node * dst){
+    Marble* tmp;
     // A) CHECK SUICIDE
     if(dst->getMarble()->isCaught()){
         cout << "(" << dst->getId() << ") " << Marble::getNameFromType(dst->getMarble()->getType()) << " suicided !" << endl;
-        dst->getMarble()->kill();
+        tmp = dst->getMarble();
+        killMarble(dst->getMarble());
         // if psychologist suicided the other player can revive
-        if(dst->getMarble()->getType() == PSYCHOLOGIST){
+        if(tmp->getType() == PSYCHOLOGIST){
             Player * p = me->getEnnemy();
             p->askRespawn(dst);
         }

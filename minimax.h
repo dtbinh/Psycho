@@ -22,12 +22,13 @@
 #ifndef MINIMAX_H
 #define MINIMAX_H
 
+#define TIMEOUT 60
+
 #include <ctime>
 #include <iostream>
+#include "myvectoroftree.h"
 
 class Player;
-class MyVectorOfTree;
-class Tree;
 
 using namespace std;
 
@@ -46,9 +47,10 @@ public:
     char *getMoveFrom(Tree* root);
 
     Tree* fillDecisionTree(Tree*, int);
-    void treeStatus(int level, int value, int maxValue, int bestTreeIndex);
     Tree* bestTree(Player *player, MyVectorOfTree* list, time_t timeout);
     MyVectorOfTree* initParcours(Player *player);
+    
+    void displayTreeStatus(Tree*);
 
 };
 
