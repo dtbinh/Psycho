@@ -28,6 +28,7 @@
 #define BOARDNODES 162
 #define BOARDSIZE 190
 #define MAXPATHSIZE 50
+#define NBPATHS 27
 
 
 class Path;

@@ -97,10 +97,7 @@ bool Board::loadPaths(string file){
     if(fichier) // success
     {
         string line;
-        // 1st line : number of paths
-        getline(fichier, line);
-
-        this->nbPaths = atoi(line.c_str());
+        this->nbPaths = NBPATHS;
 
         this->paths = new Path*[nbPaths];
         nodeList = new int[MAXPATHSIZE];
