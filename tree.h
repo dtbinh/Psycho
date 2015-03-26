@@ -34,6 +34,9 @@ const pTree pT_NULL = 0;
 class Tree
 {
 public:
+    
+    int treeSize;
+    
     Tree();
     ~Tree();
     Tree(pTree father);

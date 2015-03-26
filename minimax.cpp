@@ -50,8 +50,8 @@ int Minimax::eval(int *marblePosition, Player* player){
     return value;
 }
 
-void Minimax::treeStatus(int level, int value, int maxValue, int bestTreeIndex){
-    cout << "\rLevel : " << level << " | Value : " << value << " / " << maxValue << " | Best : " << bestTreeIndex;
+void Minimax::displayTreeStatus(Tree* T){
+    cout << "\t\t[" << T->getLevel() << "] [" << T->getValue() << "] [" << this->bestSon->treeSize << "]        \r";
 }
 
 MyVectorOfTree* Minimax::initParcours(Player* player){
@@ -76,12 +76,12 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
     Board& boardInstance = Board::Instance();
     int* accessibleNodes;
     Tree* sonTree;
+    int treeCpt = 0;
 
     Marble* currentMarble;
     Marble** allMarbles;
     Marble** playerMarbles;
     Tree* currentTree;
-    int treeCpt = 0;
 
     while(!list->isEmpty() && timeout+TIMEOUT > time(0)){
         currentTree = list->getTree(treeCpt);
@@ -142,13 +142,12 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
 
                 //cin.get();
 
-                //this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
+		        this->bestSon->treeSize++;
+    			this->displayTreeStatus(sonTree);
             }
         }
         treeCpt++;
     }
-
-    this->treeStatus(sonTree->getLevel(), sonTree->getValue(), this->bestValue, list->getIndexFromValue(this->bestSon));
 
     return this->bestSon;
 }

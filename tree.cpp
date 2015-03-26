@@ -35,6 +35,7 @@ Tree::Tree()
 {
     level = 0;
     nbSons = 0;
+    treeSize = 0;
     father = pT_NULL;
     sons = new MyVectorOfTree();
     value = -1;
@@ -48,6 +49,7 @@ Tree::Tree()
 Tree::Tree(pTree father){
     level = 0;
     nbSons = 0;
+    treeSize = 0;
     this->father = father;
     sons = new MyVectorOfTree();
     value = -1;
@@ -57,6 +59,7 @@ Tree::Tree(pTree father){
 Tree::Tree(pTree father, Marble **dispositionPlayerOne, Marble **dispositionPlayerTwo){
     level = 0;
     nbSons = 0;
+    treeSize = 0;
     this->father = father;
     sons = new MyVectorOfTree();
     value = -1;

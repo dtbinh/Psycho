@@ -47,9 +47,10 @@ public:
     char *getMoveFrom(Tree* root);
 
     Tree* fillDecisionTree(Tree*, int);
-    void treeStatus(int level, int value, int maxValue, int bestTreeIndex);
     Tree* bestTree(Player *player, MyVectorOfTree* list, time_t timeout);
     MyVectorOfTree* initParcours(Player *player);
+    
+    void displayTreeStatus(Tree*);
 
 };
 

@@ -389,9 +389,9 @@ bool Marble::isCaught(){
 
     for(int i = 0; i < surroundedOnIndex; i++){
         for(int j = 0; j < watchedOnIndex; j++){
-            cout << surroundedOnPath[i] << " , " << watchedOnPath[i] << endl;
+            //cout << surroundedOnPath[i] << " , " << watchedOnPath[i] << endl;
             if(surroundedOnPath[i] != watchedOnPath[j]){
-                cout << Marble::getNameFromType(this->getType()) << " captured" << endl;
+                cout << endl << Marble::getNameFromType(this->getType()) << " captured" << endl;
                 return true;
             }
         }
