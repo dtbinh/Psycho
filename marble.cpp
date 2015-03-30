@@ -141,8 +141,7 @@ void Marble::computeAccessibleNodes(){
     int nbPath = boardInstance.getNode(this->myNode)->nbPathsOfNode();              // Same
 
 
-    /* browse throught all the paths
-     * if this marble is in a path
+    /* browse throught all the Paths of this Marble's Node
      * add all the nodes of that path to the accessible nodes of this marble (exception commented)
      */
     for(int i = 0; i < nbPath; i++){
