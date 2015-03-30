@@ -29,7 +29,7 @@
  */
 Path::Path(int * t, int nbNodes, bool isBorder){
     this->path = t;
-    this->nbNodes = nbNodes;
+    this->size = nbNodes;
     this->isBorder = isBorder;
 }
 
@@ -48,7 +48,7 @@ Path::~Path()
  * @return nbNodes
  */
 int Path::getNbNodes(){
-    return nbNodes;
+    return size;
 }
 
 /**

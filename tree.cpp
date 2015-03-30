@@ -21,7 +21,9 @@
 
 #include "tree.h"
 #include "marble.h"
+#include "node.h"
 #include "myvectoroftree.h"
+#include "board.h"
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
@@ -298,10 +300,10 @@ int Tree::getMinValue(){
 
 void Tree::setMarblePositionsWithDisposition(Marble ** dispositionPlayerOne, Marble** dispositionPlayerTwo){
     for(int i = 0 ; i < NB_TOTAL_MARBLE / 2 ; i++){
-        this->marblesPosition[i] = dispositionPlayerOne[i]->getMyNode();
+        this->marblesPosition[i] = dispositionPlayerOne[i]->getMyNode()->getId();
     }
     for(int i = 0; i < NB_TOTAL_MARBLE / 2; i++){
-        this->marblesPosition[i+(NB_TOTAL_MARBLE / 2)] = dispositionPlayerTwo[i]->getMyNode();
+        this->marblesPosition[i+(NB_TOTAL_MARBLE / 2)] = dispositionPlayerTwo[i]->getMyNode()->getId();
     }
 }
 
@@ -311,7 +313,7 @@ Marble** Tree::getDispositionFromMarblePosition(){
     Marble** allMarbles = new Marble*[NB_TOTAL_MARBLE];
     for(int i = 0 ; i < NB_TOTAL_MARBLE; i++){
         allMarbles[i] = Util::getMarbleFromInt(i);
-        allMarbles[i]->setMyNode(this->marblesPosition[i]);
+        allMarbles[i]->setMyNode(Board::Instance().getNode(this->marblesPosition[i]));
     }
     return allMarbles;
 }

@@ -24,7 +24,6 @@
 #include "node.h"
 #include "board.h"
 #include "util.h"
-#include "path.h"
 #include "tree.h"
 #include <cstdlib>
 #include <iostream>
@@ -64,7 +63,7 @@ Player::Player(int player)
 
                 // Check player ID
                 if(currentMarbleData[0] == player){
-                    disposition[dispId] = new Marble(currentMarbleData[1], currentMarbleData[2], this);
+                    disposition[dispId] = new Marble(boardInstance.getNode(currentMarbleData[1]), currentMarbleData[2], this);
                     boardInstance.getNode(currentMarbleData[1])->setMarble(disposition[dispId]);
                     dispId++;
                 }
@@ -169,11 +168,11 @@ bool Player::move(Node * src, Node * dst){
         }
         // 2 : check the dst node
         bool dstNodeIsCorrect = false;
-        int * correctDestinations = src->getMarble()->getAccessibleNodes();
+        Node** correctDestinations = src->getMarble()->getAccessibleNodes();
         //cout << "checking " << src->getMarble()->getNbComputedNodes() << " nodes" << endl;
         for(int i = 0 ; i < src->getMarble()->getNbAccessibleNodes(); i++){
             // If dst found then it's correct
-            if(correctDestinations[i] == dst->getId()){
+            if(correctDestinations[i] == dst){
                 dstNodeIsCorrect = true;
             }
         }
@@ -274,7 +273,7 @@ string Player::getStringMarblesForFile(){
 
     // Write player / NodeID / MarbleType
     for(int i = 0 ; i < nbMarbles ; i++){
-        sstm << whoAmI << " " << disposition[i]->getMyNode() << " " << disposition[i]->getType() << endl;
+        sstm << whoAmI << " " << disposition[i]->getMyNode()->getId() << " " << disposition[i]->getType() << endl;
     }
     return sstm.str();
 }

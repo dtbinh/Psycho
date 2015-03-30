@@ -38,13 +38,7 @@ Board Board::m_instance=Board();
 Board::Board()
 {    
     // Paths loading
-    if(this->loadPaths(DATA_PATH + "paths.txt")){
-        cout << "paths loaded" << endl;
-    }
-    else{
-        cout << "fatal error : path of path file not found" << endl;
-        exit(EXIT_FAILURE);
-    }
+
 
     nodes = new Node*[BOARDSIZE];
 
@@ -59,12 +53,22 @@ Board::Board()
         }
     }
 
+    if(this->loadPaths(DATA_PATH + "paths.txt")){
+        cout << "paths loaded" << endl;
+    }
+    else{
+        cout << "fatal error : path of path file not found" << endl;
+        exit(EXIT_FAILURE);
+    }
+
     // setPaths for all the nodes
+    /*
     for(int i = 0 ; i < this->getNbPaths() ; i++){
-        for(int j = 0 ; j < this->getPath(i)->getNbNodes() ; j++){
-            this->nodes[this->getPath(i)->getNodeId(j)]->addPath(this->getPath(i));
+        for(int j = 0 ; j < this->getPath(i)->size ; j++){
+            this->nodes[this->getPath(i)->nodes[j]]->addPath(this->getPath(i));
         }
     }
+    */
 
     // nodes for dead marbles
     for(int i = BOARDNODES + 1 ; i <= BOARDSIZE - 1 ; i++){
@@ -113,12 +117,7 @@ bool Board::loadPaths(string file){
 
             nbNodes = Util::split(nodeList, rest, ' ');
 
-            if(atoi(pathId.c_str()) == 0){
-                this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, true);
-            }
-            else{
-                this->paths[atoi(pathId.c_str())] = new Path(nodeList, nbNodes, false);
-            }
+            this->paths[atoi(pathId.c_str())] = new Path(atoi(pathId.c_str()), nodeList, nbNodes);
         }
 
         fichier.close();
@@ -156,15 +155,15 @@ bool Board::checkDeaths(Player * me, Node * dst){
             // check paths and check isCatch for all annemys in it
             for(int i = 0 ; i < dst->nbPathsOfNode() ; i++){
                 Path * currentPath = dst->getPath()[i];
-                for(int j = 0 ; j < currentPath->getNbNodes() ; j++){
-                    Marble * currentMarble = this->getNode(currentPath->getNodeId(j))->getMarble();
+                for(int j = 0 ; j < currentPath->size ; j++){
+                    Marble * currentMarble = currentPath->nodes[j]->getMarble();
                     // if marble on current node check if catch
                     if(currentMarble){
                         if(currentMarble->isCaught()){
                             currentMarble->kill();
                             // If the marble killed was a psychologist the player can revive a marble
                             if(currentMarble->getType()==PSYCHOLOGIST){
-                                me->askRespawn(this->getNode(currentPath->getNodeId(j)));
+                                me->askRespawn(currentPath->nodes[j]);
                             }
                         }
                     }
@@ -177,11 +176,11 @@ bool Board::checkDeaths(Player * me, Node * dst){
 
 bool Board::killMarble(Marble * marbleToKill){
     if(marbleToKill != NULL){
-        Node * marbleNode = nodes[marbleToKill->getMyNode()];
+        Node * marbleNode = marbleToKill->getMyNode();
         Node * deadNode = nodes[firstFreeDeadMarble]; // get an empty dead node
         deadNode->setMarble(marbleToKill); // put the marble in it
         marbleNode->setMarble(NULL); // set the previous node marble to null
-        deadNode->getMarble()->setMyNode(deadNode->getId());
+        deadNode->getMarble()->setMyNode(deadNode);
         cout << "killed " << marbleNode->getId() << " to " << deadNode->getId() << endl;
         firstFreeDeadMarble++ ;
         return true;
@@ -196,7 +195,7 @@ bool Board::killMarble(Marble * marbleToKill){
 void Board::forceMove(Node * src, Node * dst){
     dst->setMarble(src->getMarble());
     src->setMarble(NULL);
-    dst->getMarble()->setMyNode(dst->getId());
+    dst->getMarble()->setMyNode(dst);
    // cout << "moved " << src->getId() << " to " << dst->getId() << endl;
 }
 
@@ -220,11 +219,11 @@ Node* Board::getNode(int i){
 void Board::showPaths(){
     for(int i = 0 ; i < this->getNbPaths() ; i++){
         cout << "Path " << i << endl;
-        if(this->getPath(i)->isTheBorder()){
+        if(this->getPath(i)->isBorder){
             cout << " IS BORDER" << endl;
         }
-        for(int j = 0 ; j < this->getPath(i)->getNbNodes() ; j++){
-            cout << this->getPath(i)->getNodeId(j) << " ";
+        for(int j = 0 ; j < this->getPath(i)->size ; j++){
+            cout << this->getPath(i)->nodes[j] << " ";
         }
         cout << endl;
     }

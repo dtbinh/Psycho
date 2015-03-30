@@ -74,7 +74,7 @@ MyVectorOfTree* Minimax::initParcours(Player* player){
 // Changer list en Tree
 Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
     Board& boardInstance = Board::Instance();
-    int* accessibleNodes;
+    Node** accessibleNodes;
     Tree* sonTree;
     int treeCpt = 0;
 
@@ -89,7 +89,7 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
 
         allMarbles = currentTree->getDispositionFromMarblePosition();
         for(int i = 0; i < NB_TOTAL_MARBLE; i++){
-            boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
+            allMarbles[i]->getMyNode()->setMarble(allMarbles[i]);
         }
         if((currentTree->getLevel()) %2 == 0){
             player->computePossibilities();
@@ -106,9 +106,9 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
             accessibleNodes = currentMarble->getAccessibleNodes();
             for(int j = 0; j < currentMarble->getNbAccessibleNodes(); j++){
                 if(currentTree->getLevel() %2 == 0){
-                    player->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
+                    player->move(currentMarble->getMyNode(), accessibleNodes[j]);
                 }else{
-                    player->getEnnemy()->move(boardInstance.getNode(currentMarble->getMyNode()), boardInstance.getNode(accessibleNodes[j]));
+                    player->getEnnemy()->move(currentMarble->getMyNode(), accessibleNodes[j]);
                 }
                 if(player->getWhoAmI() == PLAYERONE){
                     sonTree = new Tree(currentTree, player->getDisposition(), player->getEnnemy()->getDisposition());
@@ -137,10 +137,10 @@ Tree* Minimax::bestTree(Player *player, MyVectorOfTree* list, time_t timeout){
                 }
                 // set the marbles
                 for(int i = 0; i < NB_TOTAL_MARBLE; i++){
-                    boardInstance.getNode(allMarbles[i]->getMyNode())->setMarble(allMarbles[i]);
+                    allMarbles[i]->getMyNode()->setMarble(allMarbles[i]);
                 }
 
-                //cin.get();
+                cin.get();
 
 		        this->bestSon->treeSize++;
     			this->displayTreeStatus(sonTree);

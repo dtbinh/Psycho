@@ -23,14 +23,16 @@
 #define BOARDS_H
 
 #include <string>
-#include "path.h"
 #include "node.h"
-#include "path.h"
+//#include "path.h"
 
 #define BOARDNODES 162
 #define BOARDSIZE 190
 #define MAXPATHSIZE 50
 #define NBPATHS 27
+
+
+
 
 class Marble;
 class Player;
@@ -71,6 +73,24 @@ public:
     void forceMove(Node * src, Node * dst); // move a marble without checking constraints
 
     void showPaths();
+};
+
+struct Path{
+    int index;
+    Node** nodes;
+    int size;
+    bool isBorder;
+
+    Path(int index, int *idxList, int size){
+        this->index = index;
+        this->size = size;
+        this->isBorder = (index == 0);
+        this->nodes = new Node*[this->size];
+        for(int i=0; i < this->size; i++){
+            nodes[i] = Board::Instance().getNode(idxList[i]);
+            nodes[i]->addPath(this);
+        }
+    }
 };
 
 #endif // BOARDS_H

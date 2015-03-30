@@ -36,21 +36,23 @@ using namespace std;
 #define DEADLIMIT 162
 
 class Player;
+class Node;
+class Path;
 
 class Marble
 {
 public:
     Marble();
-    Marble(int nodeId, int type, Player *owner);
+    Marble(Node* nodeId, int type, Player *owner);
     ~Marble();
 
     void computeAccessibleNodes();
-    void setMyNode(int nodeId);
+    void setMyNode(Node *nodeId);
     void setOwner(Player*);
     void displayAccessibleNodes();
 
-    int* getAccessibleNodes();
-    int getMyNode();
+    Node **getAccessibleNodes();
+    Node* getMyNode();
     Player* getOwner();
     static string getNameFromType(int t);
 
@@ -63,10 +65,12 @@ public:
     bool isDead(); // check if node > 162 (dead)
 
 private:
+    bool computePath(Path* p, int index);
+    bool treatNode(Marble* currentMarble, bool* , bool*, Node* node);
     int type;                                                   // PSYCHOPATH, INFORMER, DOCTOR or PSYCHOLOGIST
-    int* accessibleNodes;                                       // an array containning the ids of the Nodes toward which this Marble can move
+    Node** accessibleNodes;                                       // an array containning the ids of the Nodes toward which this Marble can move
     int nbComputedNodes;                                        // the number of these Nodes
-    int myNode;                                                 // the id that currently contains this Marble
+    Node* myNode;                                                 // the id that currently contains this Marble
     Player* owner;                                              // the owner of this Marble
 };
 
